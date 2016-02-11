@@ -47,5 +47,5 @@ for rebuild fractal you will render again.
 ```
 $ ./fractus move 0.5 0
 ```
-[![Example Output](images/move_coord.png)]
+![Example Output](images/move_coord.png)
 
