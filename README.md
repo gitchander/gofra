@@ -53,8 +53,8 @@ $ ./fractus move 0.5 0
 
 If x or y is negative value you nead use next sintax
 ```
-$ ./fractus move -- 0 -1
+$ ./fractus move -- 0.1 -0.58
 ```
-
+Placement a circle for positioning:
 ![Example Output](images/move_coord.png)
 
