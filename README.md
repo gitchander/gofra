@@ -13,8 +13,7 @@ go get github.com/gitchander/gofra
 
 Сonsole rendering program exists in the directory `gofra/fractus`
 
-The package has a dependency:
-[cli out dependency](https://github.com/codegangsta/cli)
+Util used package: [cli.go](https://github.com/codegangsta/cli)
 
 You will build console program:
 ```
