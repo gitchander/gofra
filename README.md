@@ -9,9 +9,12 @@ To install `gofra`, simply run:
 go get github.com/gitchander/gofra
 ```
 
-## Getting Started
+## Getting started console util
 
 Сonsole rendering program exists in the directory `gofra/fractus`
+
+The package has a dependency:
+[cli out dependency](https://github.com/codegangsta/cli)
 
 You will build console program:
 ```
@@ -44,8 +47,15 @@ for rebuild fractal you will render again.
 
 ### Move position
 
+For move center position used command move x y, where x and y relative coordinate values in range [-1.0 ... +1.0].
 ```
 $ ./fractus move 0.5 0
 ```
+
+If x or y is negative value you nead use next sintax
+```
+$ ./fractus move -- 0 -1
+```
+
 ![Example Output](images/move_coord.png)
 
