@@ -9,11 +9,11 @@ import (
 	"github.com/gitchander/gofra/mth2d"
 )
 
-func RenderImageRGBA(im *image.RGBA, params Parameters) {
+func RenderImageRGBA(m *image.RGBA, params Parameters) {
 
 	var (
-		nX = im.Rect.Dx()
-		nY = im.Rect.Dy()
+		nX = m.Rect.Dx()
+		nY = m.Rect.Dy()
 
 		fi         = params.FractalInfo
 		pixelWidth = 2 * fi.Location.Radius / float64(min(nX, nY))
@@ -36,7 +36,7 @@ func RenderImageRGBA(im *image.RGBA, params Parameters) {
 		yIns = interval.Interval{Max: nY}.Split(countY)
 	)
 
-	si := newSyncImage(im)
+	si := newSyncImage(m)
 	c := newColorСomputer(params, transform)
 
 	wg := new(sync.WaitGroup)

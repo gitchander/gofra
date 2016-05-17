@@ -29,11 +29,11 @@ func coreRender(configName, imageName string) error {
 
 	size := params.ImageSize
 
-	im := gofra.NewImageRGBA(size.Width, size.Height)
+	m := gofra.NewImageRGBA(size.Width, size.Height)
 
-	gofra.RenderImageRGBA(im, *params)
+	gofra.RenderImageRGBA(m, *params)
 
-	if err := gofra.ImageSaveToPNG(im, imageName); err != nil {
+	if err := gofra.ImageSaveToPNG(m, imageName); err != nil {
 		return err
 	}
 

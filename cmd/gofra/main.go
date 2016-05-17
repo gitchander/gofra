@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"time"
 
 	"github.com/codegangsta/cli"
 )
@@ -100,10 +101,14 @@ func actionRender(c *cli.Context) {
 	configName := c.Parent().String("config")
 	imageName := c.String("image")
 
+	begin := time.Now()
+
 	err := coreRender(configName, imageName)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	log.Println("work duration:", time.Since(begin))
 }
 
 func actionIter(c *cli.Context) {

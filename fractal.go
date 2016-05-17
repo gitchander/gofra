@@ -1,6 +1,10 @@
 package gofra
 
-import "math"
+import (
+	"math"
+
+	. "github.com/gitchander/gofra/complex"
+)
 
 // ETA - Escape time algorithm
 // trace orbit

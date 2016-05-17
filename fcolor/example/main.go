@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	fcolor "github.com/gitchander/gofra/color"
+	"github.com/gitchander/gofra/fcolor"
 )
 
 func main() {

@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	fcolor "github.com/gitchander/gofra/color"
+	. "github.com/gitchander/gofra/complex"
+	"github.com/gitchander/gofra/fcolor"
 	"github.com/gitchander/gofra/mth2d"
 )
 
@@ -27,32 +28,46 @@ const (
 	FM_TRICORN
 )
 
+const (
+	str_FM_MANDELBROT      = "Mandelbrot"
+	str_FM_MANDELBROT_POW3 = "Mandelbrot^3"
+	str_FM_MANDELBROT_POW4 = "Mandelbrot^4"
+	str_FM_MANDELBROT_POW5 = "Mandelbrot^5"
+	str_FM_MANDELBROT_POW6 = "Mandelbrot^6"
+	str_FM_JULIA_SET       = "Julia Set"
+	str_FM_PHOENIX         = "Phoenix"
+	str_FM_BURNING_SHIP    = "Burning Ship"
+	str_FM_BURNING_SHIP_IM = "Burning Ship Im"
+	str_FM_SPIDER          = "Spider"
+	str_FM_TRICORN         = "Tricorn"
+)
+
 var name_Formula = map[Formula]string{
-	FM_MANDELBROT:      "Mandelbrot",
-	FM_MANDELBROT_POW3: "Mandelbrot^3",
-	FM_MANDELBROT_POW4: "Mandelbrot^4",
-	FM_MANDELBROT_POW5: "Mandelbrot^5",
-	FM_MANDELBROT_POW6: "Mandelbrot^6",
-	FM_JULIA_SET:       "Julia Set",
-	FM_PHOENIX:         "Phoenix",
-	FM_BURNING_SHIP:    "Burning Ship",
-	FM_BURNING_SHIP_IM: "Burning Ship Im",
-	FM_SPIDER:          "Spider",
-	FM_TRICORN:         "Tricorn",
+	FM_MANDELBROT:      str_FM_MANDELBROT,
+	FM_MANDELBROT_POW3: str_FM_MANDELBROT_POW3,
+	FM_MANDELBROT_POW4: str_FM_MANDELBROT_POW4,
+	FM_MANDELBROT_POW5: str_FM_MANDELBROT_POW5,
+	FM_MANDELBROT_POW6: str_FM_MANDELBROT_POW6,
+	FM_JULIA_SET:       str_FM_JULIA_SET,
+	FM_PHOENIX:         str_FM_PHOENIX,
+	FM_BURNING_SHIP:    str_FM_BURNING_SHIP,
+	FM_BURNING_SHIP_IM: str_FM_BURNING_SHIP_IM,
+	FM_SPIDER:          str_FM_SPIDER,
+	FM_TRICORN:         str_FM_TRICORN,
 }
 
 var value_Formula = map[string]Formula{
-	"Mandelbrot":      FM_MANDELBROT,
-	"Mandelbrot^3":    FM_MANDELBROT_POW3,
-	"Mandelbrot^4":    FM_MANDELBROT_POW4,
-	"Mandelbrot^5":    FM_MANDELBROT_POW5,
-	"Mandelbrot^6":    FM_MANDELBROT_POW6,
-	"Julia Set":       FM_JULIA_SET,
-	"Phoenix":         FM_PHOENIX,
-	"Burning Ship":    FM_BURNING_SHIP,
-	"Burning Ship Im": FM_BURNING_SHIP_IM,
-	"Spider":          FM_SPIDER,
-	"Tricorn":         FM_TRICORN,
+	str_FM_MANDELBROT:      FM_MANDELBROT,
+	str_FM_MANDELBROT_POW3: FM_MANDELBROT_POW3,
+	str_FM_MANDELBROT_POW4: FM_MANDELBROT_POW4,
+	str_FM_MANDELBROT_POW5: FM_MANDELBROT_POW5,
+	str_FM_MANDELBROT_POW6: FM_MANDELBROT_POW6,
+	str_FM_JULIA_SET:       FM_JULIA_SET,
+	str_FM_PHOENIX:         FM_PHOENIX,
+	str_FM_BURNING_SHIP:    FM_BURNING_SHIP,
+	str_FM_BURNING_SHIP_IM: FM_BURNING_SHIP_IM,
+	str_FM_SPIDER:          FM_SPIDER,
+	str_FM_TRICORN:         FM_TRICORN,
 }
 
 func (f *Formula) MarshalJSON() ([]byte, error) {

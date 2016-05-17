@@ -3,7 +3,7 @@ package gofra
 import (
 	"math"
 
-	fcolor "github.com/gitchander/gofra/color"
+	"github.com/gitchander/gofra/fcolor"
 )
 
 type Palette struct {

@@ -1,4 +1,4 @@
-package color
+package fcolor
 
 // Lerp - Linear interpolation
 // t= [0, 1]

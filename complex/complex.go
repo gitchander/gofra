@@ -1,4 +1,4 @@
-package gofra
+package complex
 
 import "math"
 

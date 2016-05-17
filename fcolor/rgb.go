@@ -1,12 +1,24 @@
-package color
+package fcolor
 
 import (
 	"encoding/json"
+	"image/color"
 	"math"
 )
 
 type RGB struct {
 	R, G, B float64
+}
+
+var _ color.Color = RGB{}
+
+func (c RGB) RGBA() (r, g, b, a uint32) {
+	const k = math.MaxUint16
+	r = uint32(math.Floor(c.R * k))
+	g = uint32(math.Floor(c.G * k))
+	b = uint32(math.Floor(c.B * k))
+	a = k
+	return
 }
 
 func (c *RGB) MarshalJSON() ([]byte, error) {
@@ -89,4 +101,19 @@ func MixRGB(cs []RGB) RGB {
 	b *= k
 
 	return RGB{r, g, b}
+}
+
+var RGBModel = color.ModelFunc(rgbModel)
+
+func rgbModel(c color.Color) color.Color {
+	if _, ok := c.(RGB); ok {
+		return c
+	}
+	r, g, b, _ := c.RGBA()
+	const k = 1 / float64(math.MaxUint16)
+	return RGB{
+		R: float64(r) * k,
+		G: float64(g) * k,
+		B: float64(b) * k,
+	}
 }
