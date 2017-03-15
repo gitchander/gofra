@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 func main() {
