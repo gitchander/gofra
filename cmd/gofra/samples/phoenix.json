@@ -1,0 +1,36 @@
+{
+	"ImageSize": {
+		"Width": 512,
+		"Height": 512
+	},
+	"FractalInfo": {
+		"Formula": "Phoenix",
+		"Location": {
+			"Center": {
+				"Re": 0.35,
+				"Im": 0.7
+			},
+			"Radius": 0.25,
+			"Angle": 0
+		},
+		"Parameters": [
+			{
+				"Re": 0.56667,
+				"Im": -0.5
+			}
+		]
+	},
+	"Calculation": {
+		"Iterations": 1000,
+		"AntiAliasing": "16X"
+	},
+	"Palette": {
+		"Colors": [
+			"#FFFFFF",
+			"#000000"
+		],
+		"SpaceColor": "#000000",
+		"Period": 30,
+		"Shift": 0
+	}
+}

@@ -5,6 +5,7 @@ import (
 	"math"
 
 	. "github.com/gitchander/gofra/complex"
+
 	"github.com/gitchander/gofra/fcolor"
 	"github.com/gitchander/gofra/mth2d"
 )

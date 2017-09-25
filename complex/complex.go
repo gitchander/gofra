@@ -72,8 +72,10 @@ func (a Complex) magnitude() float64 {
 
 func (z Complex) Magnitude() float64 {
 
-	a := math.Abs(z.Re)
-	b := math.Abs(z.Im)
+	var (
+		a = math.Abs(z.Re)
+		b = math.Abs(z.Im)
+	)
 
 	if a == 0 {
 		return b

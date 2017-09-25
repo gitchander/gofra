@@ -1,0 +1,31 @@
+{
+	"ImageSize": {
+		"Width": 512,
+		"Height": 512
+	},
+	"FractalInfo": {
+		"Formula": "Mandelbrot",
+		"Location": {
+			"Center": {
+				"Re": 0.25310632288455964,
+				"Im": 0.0002762094140052796
+			},
+			"Radius": 7.450580596923828e-9,
+			"Angle": 0
+		},
+		"Parameters": null
+	},
+	"Calculation": {
+		"Iterations": 10000,
+		"AntiAliasing": "25X"
+	},
+	"Palette": {
+		"Colors": [
+			"#FFFFFF",
+			"#000000"
+		],
+		"SpaceColor": "#000000",
+		"Period": 30,
+		"Shift": 0
+	}
+}

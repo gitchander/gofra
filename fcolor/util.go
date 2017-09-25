@@ -8,7 +8,7 @@ func lerp(v0, v1 float64, t float64) float64 {
 	return (1.0-t)*v0 + t*v1
 }
 
-func norm(x float64) float64 {
+func crop01(x float64) float64 {
 	if x < 0 {
 		x = 0
 	}

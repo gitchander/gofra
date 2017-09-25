@@ -27,9 +27,9 @@ func (c *RGB) MarshalJSON() ([]byte, error) {
 
 	var r, g, b uint8
 
-	r = uint8(norm(c.R) * k)
-	g = uint8(norm(c.G) * k)
-	b = uint8(norm(c.B) * k)
+	r = uint8(crop01(c.R) * k)
+	g = uint8(crop01(c.G) * k)
+	b = uint8(crop01(c.B) * k)
 
 	s := rgb_to_str(r, g, b)
 
@@ -61,9 +61,9 @@ func (c *RGB) UnmarshalJSON(data []byte) error {
 
 func (c RGB) Norm() RGB {
 	return RGB{
-		R: norm(c.R),
-		G: norm(c.G),
-		B: norm(c.B),
+		R: crop01(c.R),
+		G: crop01(c.G),
+		B: crop01(c.B),
 	}
 }
 

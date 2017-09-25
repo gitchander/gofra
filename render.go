@@ -4,12 +4,13 @@ import (
 	"image"
 	"runtime"
 	"sync"
+	"time"
 
 	"github.com/gitchander/gofra/interval"
 	"github.com/gitchander/gofra/mth2d"
 )
 
-func RenderImageRGBA(m *image.RGBA, params Parameters) {
+func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int)) {
 
 	var (
 		nX = m.Rect.Dx()
@@ -40,6 +41,7 @@ func RenderImageRGBA(m *image.RGBA, params Parameters) {
 	c := newColorСomputer(params, transform)
 
 	wg := new(sync.WaitGroup)
+	points := make(chan int)
 
 	for _, yIn := range yIns {
 		for _, xIn := range xIns {
@@ -53,14 +55,33 @@ func RenderImageRGBA(m *image.RGBA, params Parameters) {
 			)
 
 			wg.Add(1)
-			go renderRectangle(wg, r, cc, si)
+			go renderRectangle(wg, r, cc, si, points)
 		}
 	}
 
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+
+	total := nX * nY
+	count := 0
+	for {
+		select {
+		case <-ticker.C:
+			percent := count * 100 / total
+			progress(percent)
+			if count >= total {
+				goto stop
+			}
+
+		case n := <-points:
+			count += n
+		}
+	}
+stop:
 	wg.Wait()
 }
 
-func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, si *syncImage) {
+func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, si *syncImage, points chan<- int) {
 
 	defer wg.Done()
 
@@ -71,6 +92,8 @@ func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, s
 		x0 = r.Min.X
 		xn = r.Max.X
 
+		dx = xn - x0
+
 		clСompute = cc.colorСompute
 
 		ti = image.NewRGBA(r)
@@ -80,6 +103,7 @@ func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, s
 		for x := x0; x < xn; x++ {
 			ti.Set(x, y, clСompute(x, y))
 		}
+		points <- dx
 	}
 
 	si.Draw(r, ti)

@@ -65,54 +65,44 @@ func (m *Matrix) Scale(x, y float64) {
 }
 
 func (m *Matrix) Rotate(angle float64) {
-
 	var n Matrix
 	n.InitRotate(angle)
-
 	mul(m[:], n[:], m[:])
 }
 
 func ReflectAxisX(m *Matrix) {
-
 	var n = Matrix{
 		1, 0, 0,
 		0, -1, 0,
 		0, 0, 1,
 	}
-
 	mul(m[:], n[:], m[:])
 }
 
 func ReflectAxisY(m *Matrix) {
-
 	var n = Matrix{
 		-1, 0, 0,
 		0, 1, 0,
 		0, 0, 1,
 	}
-
 	mul(m[:], n[:], m[:])
 }
 
 // matrix * vector
 func (m *Matrix) mulVectorL(x, y float64) (tx, ty float64) {
-
 	var v, w Vector
 	v.set_XY(x, y)
 	matrix_mul_vector(m[:], v[:], w[:])
 	tx, ty = w.get_XY()
-
 	return
 }
 
 // vector * matrix
 func (m *Matrix) mulVectorR(x, y float64) (tx, ty float64) {
-
 	var v, w Vector
 	v.set_XY(x, y)
 	vector_mul_matrix(v[:], m[:], w[:])
 	tx, ty = w.get_XY()
-
 	return
 }
 

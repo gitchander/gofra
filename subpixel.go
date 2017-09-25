@@ -18,6 +18,14 @@ var (
 		+1.0 / 8.0,
 		+3.0 / 8.0,
 	}
+
+	tableSP_25x = []float64{
+		-2.0 / 5.0,
+		-1.0 / 5.0,
+		0.0,
+		+1.0 / 5.0,
+		+2.0 / 5.0,
+	}
 )
 
 type spPoint struct {
@@ -42,7 +50,6 @@ func makeSpTable(table []float64) []spPoint {
 }
 
 func makeSubpixelTable(aa AntiAliasing) (t []spPoint) {
-
 	switch aa {
 	case AA_4X:
 		t = makeSpTable(tableSP_4x)
@@ -50,6 +57,8 @@ func makeSubpixelTable(aa AntiAliasing) (t []spPoint) {
 		t = makeSpTable(tableSP_9x)
 	case AA_16X:
 		t = makeSpTable(tableSP_16x)
+	case AA_25X:
+		t = makeSpTable(tableSP_25x)
 	}
 	return
 }

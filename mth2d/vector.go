@@ -9,17 +9,13 @@ func (v *Vector) set_XY(x, y float64) {
 }
 
 func (v Vector) get_XY() (x, y float64) {
-
 	v.norm()
-
 	x = v[0]
 	y = v[1]
-
 	return
 }
 
 func (v *Vector) norm() {
-
 	if m := v[2]; m != 1 {
 		if m == 0 {
 			return

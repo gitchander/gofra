@@ -7,7 +7,6 @@ import (
 )
 
 func newParamsFromFile(fileName string) (*gofra.Parameters, error) {
-
 	var p gofra.Parameters
 	if err := p.LoadFromFile(fileName); err != nil {
 		return nil, err
@@ -28,10 +27,9 @@ func coreRender(configName, imageName string) error {
 	}
 
 	size := params.ImageSize
-
 	m := gofra.NewImageRGBA(size.Width, size.Height)
 
-	gofra.RenderImageRGBA(m, *params)
+	renderWithProgress(m, params)
 
 	if err := gofra.ImageSaveToPNG(m, imageName); err != nil {
 		return err
@@ -74,6 +72,31 @@ func coreMove(configName string, x, y float64) error {
 	if err != nil {
 		return err
 	}
+
+	var (
+		dX = params.ImageSize.Width
+		dY = params.ImageSize.Height
+
+		minXY = min(dX, dY)
+	)
+
+	x *= float64(dX) / float64(minXY)
+	y *= float64(dY) / float64(minXY)
+
+	params.MoveRelativeLocation(x, y)
+
+	return params.SaveToFile(configName)
+}
+
+func coreMovePrev(configName string, x, y float64) error {
+
+	params, err := newParamsFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	x = cropRangef(x, -1, +1)
+	y = cropRangef(y, -1, +1)
 
 	params.MoveRelativeLocation(x, y)
 

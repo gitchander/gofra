@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	. "github.com/gitchander/gofra/complex"
+
 	"github.com/gitchander/gofra/fcolor"
 	"github.com/gitchander/gofra/mth2d"
 )
@@ -70,11 +71,11 @@ var value_Formula = map[string]Formula{
 	str_FM_TRICORN:         FM_TRICORN,
 }
 
-func (f *Formula) MarshalJSON() ([]byte, error) {
+func (f Formula) MarshalJSON() ([]byte, error) {
 
-	s, ok := name_Formula[*f]
+	s, ok := name_Formula[f]
 	if !ok {
-		return nil, errors.New("Forula.MarshalJSON")
+		return nil, errors.New("Formula.MarshalJSON")
 	}
 
 	return json.Marshal(s)
@@ -106,6 +107,7 @@ const (
 	AA_4X
 	AA_9X
 	AA_16X
+	AA_25X
 )
 
 var key_AntiAliasing = map[AntiAliasing]string{
@@ -113,6 +115,7 @@ var key_AntiAliasing = map[AntiAliasing]string{
 	AA_4X:   "4X",
 	AA_9X:   "9X",
 	AA_16X:  "16X",
+	AA_25X:  "25X",
 }
 
 var val_AntiAliasing = map[string]AntiAliasing{
@@ -120,11 +123,12 @@ var val_AntiAliasing = map[string]AntiAliasing{
 	"4X":   AA_4X,
 	"9X":   AA_9X,
 	"16X":  AA_16X,
+	"25X":  AA_25X,
 }
 
-func (aa *AntiAliasing) MarshalJSON() ([]byte, error) {
+func (aa AntiAliasing) MarshalJSON() ([]byte, error) {
 
-	s, ok := key_AntiAliasing[*aa]
+	s, ok := key_AntiAliasing[aa]
 	if !ok {
 		return nil, errors.New("AntiAliasing.MarshalJSON")
 	}
@@ -187,13 +191,13 @@ var DefaultParameters = Parameters{
 		Height: 512,
 	},
 	FractalInfo: FractalInfo{
-		Formula:    FM_MANDELBROT,
-		Parameters: nil,
+		Formula: FM_MANDELBROT,
 		Location: Location{
 			Center: Complex{0, 0},
 			Radius: 2,
 			Angle:  0,
 		},
+		Parameters: nil,
 	},
 	Calculation: Calculation{
 		Iterations:   100,
@@ -248,20 +252,8 @@ func (p *Parameters) SaveToFile(fileName string) error {
 }
 
 // relative value
+// range: [-1 ... +1]
 func (p *Parameters) MoveRelativeLocation(x, y float64) {
-
-	normRelativeValue := func(x float64) float64 {
-		if x < -1 {
-			x = -1
-		}
-		if x > 1 {
-			x = 1
-		}
-		return x
-	}
-
-	x = normRelativeValue(x)
-	y = normRelativeValue(y)
 
 	loc := &(p.FractalInfo.Location)
 
