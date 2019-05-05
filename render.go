@@ -17,7 +17,7 @@ func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int
 		nY = m.Rect.Dy()
 
 		fi         = params.FractalInfo
-		pixelWidth = 2 * fi.Location.Radius / float64(min(nX, nY))
+		pixelWidth = 2 * fi.Location.Radius / float64(minInt(nX, nY))
 		center     = fi.Location.Center
 	)
 

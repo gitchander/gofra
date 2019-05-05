@@ -1,13 +1,13 @@
 package main
 
-func min(a, b int) int {
+func minInt(a, b int) int {
 	if a < b {
 		return a
 	}
 	return b
 }
 
-func cropRange(x, min, max int) int {
+func cropInt(x, min, max int) int {
 	if min > max {
 		min, max = max, min
 	}
@@ -20,7 +20,7 @@ func cropRange(x, min, max int) int {
 	return x
 }
 
-func cropRangef(x, min, max float64) float64 {
+func cropFloat64(x, min, max float64) float64 {
 	if min > max {
 		min, max = max, min
 	}

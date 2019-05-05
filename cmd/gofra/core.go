@@ -66,7 +66,22 @@ func coreScale(configName string, scale float64) error {
 	return params.SaveToFile(configName)
 }
 
-func coreMove(configName string, x, y float64) error {
+func coreMove1(configName string, x, y float64) error {
+
+	params, err := newParamsFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	x = cropFloat64(x, -1, +1)
+	y = cropFloat64(y, -1, +1)
+
+	params.MoveRelativeLocation(x, y)
+
+	return params.SaveToFile(configName)
+}
+
+func coreMove2(configName string, x, y float64) error {
 
 	params, err := newParamsFromFile(configName)
 	if err != nil {
@@ -77,26 +92,11 @@ func coreMove(configName string, x, y float64) error {
 		dX = params.ImageSize.Width
 		dY = params.ImageSize.Height
 
-		minXY = min(dX, dY)
+		minXY = minInt(dX, dY)
 	)
 
 	x *= float64(dX) / float64(minXY)
 	y *= float64(dY) / float64(minXY)
-
-	params.MoveRelativeLocation(x, y)
-
-	return params.SaveToFile(configName)
-}
-
-func coreMovePrev(configName string, x, y float64) error {
-
-	params, err := newParamsFromFile(configName)
-	if err != nil {
-		return err
-	}
-
-	x = cropRangef(x, -1, +1)
-	y = cropRangef(y, -1, +1)
 
 	params.MoveRelativeLocation(x, y)
 

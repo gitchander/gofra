@@ -4,6 +4,8 @@ import (
 	"math/rand"
 	"testing"
 	"time"
+
+	. "github.com/gitchander/gofra/complex"
 )
 
 var seedBench int64 = rand.Int63()

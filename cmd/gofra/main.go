@@ -70,7 +70,7 @@ func main() {
 			Name:      "move",
 			ShortName: "m",
 			Usage:     "move center",
-			Action:    actionMove,
+			Action:    actionMove3,
 		},
 		{
 			Name:      "palette",
