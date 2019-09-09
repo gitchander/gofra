@@ -30,7 +30,16 @@ func main() {
 		cli.StringFlag{
 			Name:  "config",
 			Value: "fractal.json",
-			Usage: "configuration file",
+			Usage: "source configuration file name",
+		},
+		cli.StringFlag{
+			Name:  "image",
+			Value: "fractal.png",
+			Usage: "destination image file name",
+		},
+		cli.BoolFlag{
+			Name:  "render",
+			Usage: "render image after changed",
 		},
 	}
 
@@ -42,17 +51,10 @@ func main() {
 			Action:    actionDefault,
 		},
 		{
-			Name:      "render",
-			ShortName: "r",
-			Usage:     "render the fractal",
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:  "image",
-					Value: "fractal.png",
-					Usage: "destination image file name",
-				},
-			},
-			Action: actionRender,
+			Name:      "draw",
+			ShortName: "draw",
+			Usage:     "draw the fractal",
+			Action:    actionDraw,
 		},
 		{
 			Name:      "iter",
@@ -70,7 +72,13 @@ func main() {
 			Name:      "move",
 			ShortName: "m",
 			Usage:     "move center",
-			Action:    actionMove3,
+			Action:    actionMove,
+		},
+		{
+			Name:      "rotate",
+			ShortName: "rotate",
+			Usage:     "rotate about center",
+			Action:    actionRotate,
 		},
 		{
 			Name:      "palette",

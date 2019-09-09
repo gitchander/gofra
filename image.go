@@ -10,27 +10,25 @@ import (
 )
 
 type syncImage struct {
-	im    draw.Image
-	mutex sync.Mutex
+	guard sync.Mutex
+	m     draw.Image
 }
 
-func newSyncImage(im draw.Image) *syncImage {
-	return &syncImage{im: im}
+func newSyncImage(m draw.Image) *syncImage {
+	return &syncImage{m: m}
 }
 
-func (si *syncImage) Draw(r image.Rectangle, src image.Image) {
-
-	si.mutex.Lock()
-	defer si.mutex.Unlock()
-
-	draw.Draw(si.im, r, src, r.Min, draw.Src)
+func (p *syncImage) Draw(r image.Rectangle, src image.Image) {
+	p.guard.Lock()
+	draw.Draw(p.m, r, src, r.Min, draw.Src)
+	p.guard.Unlock()
 }
 
-func NewImageRGBA(Width, Height int) *image.RGBA {
+func NewImageRGBA(size image.Point) *image.RGBA {
 
 	var (
-		Dx = Width
-		Dy = Height
+		Dx = size.X
+		Dy = size.Y
 	)
 
 	if Dx <= 0 {
@@ -43,7 +41,7 @@ func NewImageRGBA(Width, Height int) *image.RGBA {
 	return image.NewRGBA(image.Rect(0, 0, Dx, Dy))
 }
 
-func ImageSaveToPNG(im image.Image, filename string) error {
+func ImageSaveToPNG(m image.Image, filename string) error {
 
 	file, err := os.Create(filename)
 	if err != nil {
@@ -54,5 +52,5 @@ func ImageSaveToPNG(im image.Image, filename string) error {
 	w := bufio.NewWriter(file)
 	defer w.Flush()
 
-	return png.Encode(w, im)
+	return png.Encode(w, m)
 }

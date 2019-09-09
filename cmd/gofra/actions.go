@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"time"
 
@@ -14,24 +13,48 @@ func actionDefault(c *cli.Context) {
 	configName := c.Parent().String("config")
 
 	err := coreDefault(configName)
-	if err != nil {
-		log.Fatal(err)
+	checkError(err)
+
+	renderIfNeed(c)
+}
+
+func renderIfNeed(c *cli.Context) {
+	if c.Parent().Bool("render") {
+		actionDraw(c)
 	}
 }
 
-func actionRender(c *cli.Context) {
+func actionDraw(c *cli.Context) {
 
-	configName := c.Parent().String("config")
-	imageName := c.String("image")
+	var (
+		configName = c.Parent().String("config")
+		imageName  = c.Parent().String("image")
+	)
 
 	begin := time.Now()
 
 	err := coreRender(configName, imageName)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
 
 	fmt.Println("Work duration:", time.Since(begin))
+}
+
+func actionMove(c *cli.Context) {
+	actionMove3(c)
+	renderIfNeed(c)
+}
+
+func actionRotate(c *cli.Context) {
+
+	configName := c.Parent().String("config")
+
+	angleDeg, err := strconv.ParseInt(c.Args().First(), 10, 32)
+	checkError(err)
+
+	err = coreRotate(configName, int(angleDeg))
+	checkError(err)
+
+	renderIfNeed(c)
 }
 
 func actionIter(c *cli.Context) {
@@ -39,28 +62,24 @@ func actionIter(c *cli.Context) {
 	configName := c.Parent().String("config")
 
 	n, err := strconv.ParseInt(c.Args().First(), 10, 32)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
 
 	err = coreIter(configName, int(n))
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
+
+	renderIfNeed(c)
 }
 
 func actionScale(c *cli.Context) {
 
 	configName := c.Parent().String("config")
 	scaleFactor, err := strconv.ParseFloat(c.Args().First(), 64)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
 
 	err = coreScale(configName, scaleFactor)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
+
+	renderIfNeed(c)
 }
 
 func actionPalette(c *cli.Context) {
@@ -70,17 +89,13 @@ func actionPalette(c *cli.Context) {
 	args := c.Args()
 
 	palPeriod, err := strconv.ParseFloat(args[0], 64)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
 
 	palShift, err := strconv.ParseFloat(args[1], 64)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
 
 	err = corePalette(configName, palPeriod, palShift)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	checkError(err)
+
+	renderIfNeed(c)
 }

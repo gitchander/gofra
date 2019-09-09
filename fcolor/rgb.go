@@ -13,15 +13,14 @@ type RGB struct {
 var _ color.Color = RGB{}
 
 func (c RGB) RGBA() (r, g, b, a uint32) {
-	const k = math.MaxUint16
-	r = uint32(math.Floor(c.R * k))
-	g = uint32(math.Floor(c.G * k))
-	b = uint32(math.Floor(c.B * k))
-	a = k
+	r = uint32(math.Floor(c.R * maxUint16))
+	g = uint32(math.Floor(c.G * maxUint16))
+	b = uint32(math.Floor(c.B * maxUint16))
+	a = maxUint16
 	return
 }
 
-func (c *RGB) MarshalJSON() ([]byte, error) {
+func (c RGB) MarshalJSON() ([]byte, error) {
 
 	const k = math.MaxUint8
 
@@ -77,11 +76,7 @@ func LerpRGB(c0, c1 RGB, t float64) RGB {
 
 func SinerpRGB(c0, c1 RGB, t float64) RGB {
 	t = (1 - math.Sin(math.Pi*(t+0.5))) * 0.5
-	return RGB{
-		R: lerp(c0.R, c1.R, t),
-		G: lerp(c0.G, c1.G, t),
-		B: lerp(c0.B, c1.B, t),
-	}
+	return LerpRGB(c0, c1, t)
 }
 
 func MixRGB(cs []RGB) RGB {
@@ -110,10 +105,9 @@ func rgbModel(c color.Color) color.Color {
 		return c
 	}
 	r, g, b, _ := c.RGBA()
-	const k = 1 / float64(math.MaxUint16)
 	return RGB{
-		R: float64(r) * k,
-		G: float64(g) * k,
-		B: float64(b) * k,
+		R: float64(r) / maxUint16,
+		G: float64(g) / maxUint16,
+		B: float64(b) / maxUint16,
 	}
 }

@@ -7,7 +7,7 @@ import (
 	. "github.com/gitchander/gofra/complex"
 
 	"github.com/gitchander/gofra/fcolor"
-	"github.com/gitchander/gofra/mth2d"
+	"github.com/gitchander/gofra/math2d"
 )
 
 type colorСomputer interface {
@@ -19,7 +19,7 @@ type aliasingСomputer struct {
 	iterations  int
 	colorTable  []fcolor.RGB
 	orbitTracer OrbitTracer
-	transform   mth2d.Matrix
+	transform   math2d.Matrix
 }
 
 func (c aliasingСomputer) colorСompute(x, y int) color.RGBA {
@@ -84,7 +84,7 @@ func (c antiAliasingСomputer) Clone() colorСomputer {
 	return v
 }
 
-func newColorСomputer(params Parameters, transform mth2d.Matrix) colorСomputer {
+func newColorСomputer(params Parameters, transform math2d.Matrix) colorСomputer {
 
 	ac := aliasingСomputer{
 		iterations:  params.Calculation.Iterations,

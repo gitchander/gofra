@@ -1,43 +1,59 @@
-package mth2d
+package math2d
 
 import "math"
 
-type Matrix [3 * 3]float64
+type Matrix3x3 [3 * 3]float64
 
-func (m *Matrix) InitIdendity() {
-	*m = Matrix{
+func (m *Matrix3x3) InitIdendity() {
+	*m = Matrix3x3{
 		1, 0, 0,
 		0, 1, 0,
 		0, 0, 1,
 	}
 }
 
-func (m *Matrix) InitTranslate(x, y float64) {
-	*m = Matrix{
+func (m *Matrix3x3) InitTranslate(x, y float64) {
+	*m = Matrix3x3{
 		1, 0, 0,
 		0, 1, 0,
 		x, y, 1,
 	}
 }
 
-func (m *Matrix) InitScale(x, y float64) {
-	*m = Matrix{
+func (m *Matrix3x3) InitScale(x, y float64) {
+	*m = Matrix3x3{
 		x, 0, 0,
 		0, y, 0,
 		0, 0, 1,
 	}
 }
 
-func (m *Matrix) InitRotate(angle float64) {
+func (m *Matrix3x3) InitRotate(angle float64) {
 	sin, cos := math.Sincos(angle)
-	*m = Matrix{
+	*m = Matrix3x3{
 		cos, -sin, 0,
 		sin, cos, 0,
 		0, 0, 1,
 	}
 }
 
-func (m *Matrix) Translate(x, y float64) {
+func (m *Matrix3x3) InitReflectAxisX() {
+	*m = Matrix3x3{
+		1, 0, 0,
+		0, -1, 0,
+		0, 0, 1,
+	}
+}
+
+func (m *Matrix3x3) InitReflectAxisY() {
+	*m = Matrix3x3{
+		-1, 0, 0,
+		0, 1, 0,
+		0, 0, 1,
+	}
+}
+
+func (m *Matrix3x3) Translate(x, y float64) {
 
 	temp := m[2]
 	m[0] += x * temp
@@ -52,7 +68,7 @@ func (m *Matrix) Translate(x, y float64) {
 	m[7] += y * temp
 }
 
-func (m *Matrix) Scale(x, y float64) {
+func (m *Matrix3x3) Scale(x, y float64) {
 
 	m[0] *= x
 	m[1] *= y
@@ -64,61 +80,55 @@ func (m *Matrix) Scale(x, y float64) {
 	m[7] *= y
 }
 
-func (m *Matrix) Rotate(angle float64) {
-	var n Matrix
+func (m *Matrix3x3) Rotate(angle float64) {
+	var n Matrix3x3
 	n.InitRotate(angle)
-	mul(m[:], n[:], m[:])
+	mul3x3(m[:], n[:], m[:])
 }
 
-func ReflectAxisX(m *Matrix) {
-	var n = Matrix{
-		1, 0, 0,
-		0, -1, 0,
-		0, 0, 1,
-	}
-	mul(m[:], n[:], m[:])
+func (m *Matrix3x3) ReflectAxisX() {
+	var n Matrix3x3
+	n.InitReflectAxisX()
+	mul3x3(m[:], n[:], m[:])
 }
 
-func ReflectAxisY(m *Matrix) {
-	var n = Matrix{
-		-1, 0, 0,
-		0, 1, 0,
-		0, 0, 1,
-	}
-	mul(m[:], n[:], m[:])
+func (m *Matrix3x3) ReflectAxisY() {
+	var n Matrix3x3
+	n.InitReflectAxisY()
+	mul3x3(m[:], n[:], m[:])
 }
 
 // matrix * vector
-func (m *Matrix) mulVectorL(x, y float64) (tx, ty float64) {
-	var v, w Vector
-	v.set_XY(x, y)
+func (m *Matrix3x3) mulVectorL(x, y float64) (tx, ty float64) {
+	var v, w vector3
+	v.setXY(x, y)
 	matrix_mul_vector(m[:], v[:], w[:])
-	tx, ty = w.get_XY()
+	tx, ty = w.getXY()
 	return
 }
 
 // vector * matrix
-func (m *Matrix) mulVectorR(x, y float64) (tx, ty float64) {
-	var v, w Vector
-	v.set_XY(x, y)
+func (m *Matrix3x3) mulVectorR(x, y float64) (tx, ty float64) {
+	var v, w vector3
+	v.setXY(x, y)
 	vector_mul_matrix(v[:], m[:], w[:])
-	tx, ty = w.get_XY()
+	tx, ty = w.getXY()
 	return
 }
 
-func (m *Matrix) TransformPoint(x, y float64) (tx, ty float64) {
+func (m *Matrix3x3) TransformPoint(x, y float64) (tx, ty float64) {
 	tx, ty = m.mulVectorR(x, y)
 	return
 }
 
-func (m *Matrix) Invert() {
-	var i Matrix
+func (m *Matrix3x3) Invert() {
+	var i Matrix3x3
 	invert(m[:], i[:])
 	*m = i
 }
 
 // z = x * y
-func mul(x, y, z []float64) {
+func mul3x3(x, y, z []float64) {
 
 	a, b, c := x[0], x[1], x[2]
 
@@ -169,7 +179,6 @@ func det(m []float64) (d float64) {
 }
 
 func transpose(m []float64) {
-
 	m[1], m[3] = m[3], m[1]
 	m[2], m[6] = m[6], m[2]
 	m[5], m[7] = m[7], m[5]

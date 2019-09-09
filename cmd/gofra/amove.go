@@ -10,7 +10,7 @@ import (
 
 func actionMove1(c *cli.Context) {
 
-	// ./mset move -- -0.5 0.1
+	// ./gofra move -- -0.5 0.1
 
 	configName := c.Parent().String("config")
 
@@ -34,7 +34,7 @@ func actionMove1(c *cli.Context) {
 
 func actionMove2(c *cli.Context) {
 
-	// ./mset move 5 5
+	// ./gofra move 5 5
 
 	configName := c.Parent().String("config")
 
@@ -104,8 +104,8 @@ func parseMoveCoord(s string, defaultVal int) (int, error) {
 	return int(val), nil
 }
 
-// ./mset move ..
-// ./mset move N_
+// ./gofra move ..
+// ./gofra move N_
 
 // Cardinal direction
 // https://en.wikipedia.org/wiki/Cardinal_direction
@@ -135,7 +135,7 @@ func parseMoveCoord(s string, defaultVal int) (int, error) {
 
 func actionMove3(c *cli.Context) {
 
-	// ./mset move ph mh
+	// ./gofra move ph mh
 
 	configName := c.Parent().String("config")
 
@@ -161,26 +161,21 @@ func actionMove3(c *cli.Context) {
 	}
 }
 
-// w (whole - целый)
-// h (half - половина)
-// q (quarter - четверть)
-// e (eighth - восьмая часть)
-
 var errInsuffDataLen = errors.New("insufficient data length")
 
 func parseCoef(s string) (float64, error) {
-	bs := []byte(s)
 
+	bs := []byte(s)
 	if len(bs) == 0 {
 		return 0, errInsuffDataLen
 	}
 
 	var negative bool
 	switch b := bs[0]; b {
-	case 'm':
+	case 'm': // minus
 		negative = true
 		fallthrough
-	case 'p':
+	case 'p': // plus
 		bs = bs[1:]
 	}
 
@@ -190,20 +185,11 @@ func parseCoef(s string) (float64, error) {
 
 	var v float64
 	for _, b := range bs {
-		switch b {
-		case 'w':
-			v += 1
-		case 'h':
-			v += 0.5 // 1 / 2
-		case 'q':
-			v += 0.25 // 1 / 4
-		case 'e':
-			v += 0.125 // 1 / 8
-		case 'z':
-			v += 0
-		default:
+		dv, ok := shoftNameToCoef[b]
+		if !ok {
 			return 0, errors.New("invalid coefficient")
 		}
+		v += dv
 	}
 
 	if negative {
@@ -211,4 +197,17 @@ func parseCoef(s string) (float64, error) {
 	}
 
 	return v, nil
+}
+
+// w (whole - целый)
+// h (half - половина)
+// q (quarter - четверть)
+// e (eighth - восьмая часть)
+
+var shoftNameToCoef = map[byte]float64{
+	'z': 0.0,   // zero    = 0
+	'w': 1.0,   // whole   = 1
+	'h': 0.5,   // half    = (1 / 2)
+	'q': 0.25,  // quarter = (1 / 4)
+	'e': 0.125, // eighth  = (1 / 8)
 }

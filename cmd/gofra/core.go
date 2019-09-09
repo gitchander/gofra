@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"image"
 
 	"github.com/gitchander/gofra"
 )
@@ -26,8 +27,11 @@ func coreRender(configName, imageName string) error {
 		return err
 	}
 
-	size := params.ImageSize
-	m := gofra.NewImageRGBA(size.Width, size.Height)
+	size := image.Point{
+		X: params.ImageSize.Width,
+		Y: params.ImageSize.Height,
+	}
+	m := gofra.NewImageRGBA(size)
 
 	renderWithProgress(m, params)
 
@@ -62,6 +66,19 @@ func coreScale(configName string, scale float64) error {
 	}
 
 	params.FractalInfo.Location.Radius /= scale
+
+	return params.SaveToFile(configName)
+}
+
+func coreRotate(configName string, angle int) error {
+
+	params, err := newParamsFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	anglePrev := params.FractalInfo.Location.AngleDeg
+	params.FractalInfo.Location.AngleDeg = angleDegNorm(anglePrev + angle)
 
 	return params.SaveToFile(configName)
 }

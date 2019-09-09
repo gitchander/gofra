@@ -7,10 +7,10 @@ import (
 )
 
 type Palette struct {
-	Colors     []fcolor.RGB
-	SpaceColor fcolor.RGB
-	Period     float64
-	Shift      float64
+	Colors     []fcolor.RGB `json:"colors"`
+	SpaceColor fcolor.RGB   `json:"space_color"`
+	Period     float64      `json:"period"`
+	Shift      float64      `json:"shift"`
 }
 
 func newColorTable(iterations int, pal Palette) []fcolor.RGB {

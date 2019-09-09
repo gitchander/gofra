@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gitchander/gofra/interval"
-	"github.com/gitchander/gofra/mth2d"
+	"github.com/gitchander/gofra/math2d"
 )
 
 func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int)) {
@@ -21,12 +21,12 @@ func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int
 		center     = fi.Location.Center
 	)
 
-	var transform mth2d.Matrix
+	var transform math2d.Matrix
 	transform.InitIdendity()
 	transform.Translate(-float64(nX)/2, -float64(nY)/2)
 	transform.Scale(pixelWidth, pixelWidth)
-	mth2d.ReflectAxisX(&transform)
-	transform.Rotate(degToRad(fi.Location.Angle))
+	transform.ReflectAxisX()
+	transform.Rotate(degToRad(float64(fi.Location.AngleDeg)))
 	transform.Translate(center.Re, center.Im)
 
 	numCPU := runtime.NumCPU()

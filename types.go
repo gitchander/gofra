@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"strings"
 
 	. "github.com/gitchander/gofra/complex"
 
 	"github.com/gitchander/gofra/fcolor"
-	"github.com/gitchander/gofra/mth2d"
+	"github.com/gitchander/gofra/math2d"
 )
 
 type Formula int
@@ -100,89 +99,33 @@ func (f *Formula) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type AntiAliasing int
-
-const (
-	AA_NONE AntiAliasing = iota
-	AA_4X
-	AA_9X
-	AA_16X
-	AA_25X
-)
-
-var key_AntiAliasing = map[AntiAliasing]string{
-	AA_NONE: "NONE",
-	AA_4X:   "4X",
-	AA_9X:   "9X",
-	AA_16X:  "16X",
-	AA_25X:  "25X",
-}
-
-var val_AntiAliasing = map[string]AntiAliasing{
-	"NONE": AA_NONE,
-	"4X":   AA_4X,
-	"9X":   AA_9X,
-	"16X":  AA_16X,
-	"25X":  AA_25X,
-}
-
-func (aa AntiAliasing) MarshalJSON() ([]byte, error) {
-
-	s, ok := key_AntiAliasing[aa]
-	if !ok {
-		return nil, errors.New("AntiAliasing.MarshalJSON")
-	}
-
-	return json.Marshal(s)
-}
-
-func (aa *AntiAliasing) UnmarshalJSON(data []byte) error {
-
-	var s string
-
-	err := json.Unmarshal(data, &s)
-	if err != nil {
-		return err
-	}
-
-	s = strings.ToUpper(s)
-	v, ok := val_AntiAliasing[s]
-	if !ok {
-		return errors.New("AntiAliasing.UnmarshalJSON")
-	}
-
-	*aa = v
-
-	return nil
-}
-
 type Location struct {
-	Center Complex
-	Radius float64
-	Angle  float64
+	Center   Complex `json:"center"`
+	Radius   float64 `json:"radius"`
+	AngleDeg int     `json:"angle_deg"`
 }
 
 type FractalInfo struct {
-	Formula    Formula
-	Location   Location
-	Parameters []Complex
+	Formula    Formula   `json:"formula"`
+	Location   Location  `json:"location"`
+	Parameters []Complex `json:"parameters"`
 }
 
 type Calculation struct {
-	Iterations   int
-	AntiAliasing AntiAliasing
+	Iterations   int          `json:"iterations"`
+	AntiAliasing AntiAliasing `json:"anti_aliasing"`
 }
 
 type Size struct {
-	Width  int
-	Height int
+	Width  int `json:"width"`
+	Height int `json:"height"`
 }
 
 type Parameters struct {
-	ImageSize   Size
-	FractalInfo FractalInfo
-	Calculation Calculation
-	Palette     Palette
+	ImageSize   Size        `json:"image_size"`
+	FractalInfo FractalInfo `json:"fractal_info"`
+	Calculation Calculation `json:"calculation"`
+	Palette     Palette     `json:"palette"`
 }
 
 var DefaultParameters = Parameters{
@@ -193,9 +136,9 @@ var DefaultParameters = Parameters{
 	FractalInfo: FractalInfo{
 		Formula: FM_MANDELBROT,
 		Location: Location{
-			Center: Complex{0, 0},
-			Radius: 2,
-			Angle:  0,
+			Center:   Complex{0, 0},
+			Radius:   2,
+			AngleDeg: 0,
 		},
 		Parameters: nil,
 	},
@@ -257,10 +200,10 @@ func (p *Parameters) MoveRelativeLocation(x, y float64) {
 
 	loc := &(p.FractalInfo.Location)
 
-	var m mth2d.Matrix
+	var m math2d.Matrix
 	m.InitIdendity()
 	m.Scale(loc.Radius, loc.Radius)
-	m.Rotate(degToRad(loc.Angle))
+	m.Rotate(degToRad(float64(loc.AngleDeg)))
 	m.Translate(loc.Center.Re, loc.Center.Im)
 
 	loc.Center.Re, loc.Center.Im = m.TransformPoint(x, y)
