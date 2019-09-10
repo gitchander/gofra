@@ -4,21 +4,16 @@
 		"height": 512
 	},
 	"fractal_info": {
-		"formula": "phoenix",
+		"formula": "mandelbrot",
 		"location": {
 			"center": {
-				"re": 0.35,
-				"im": 0.7
+				"re": -1.7495089173316956,
+				"im": 0
 			},
-			"radius": 0.25,
+			"radius": 0.0000025431315104166665,
 			"angle_deg": 0
 		},
-		"parameters": [
-			{
-				"re": 0.56667,
-				"im": -0.5
-			}
-		]
+		"parameters": null
 	},
 	"calculation": {
 		"iterations": 1000,

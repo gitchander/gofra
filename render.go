@@ -10,13 +10,13 @@ import (
 	"github.com/gitchander/gofra/math2d"
 )
 
-func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int)) {
+func RenderImageRGBA(m *image.RGBA, config Config, progress func(percent int)) {
 
 	var (
 		nX = m.Rect.Dx()
 		nY = m.Rect.Dy()
 
-		fi         = params.FractalInfo
+		fi         = config.FractalInfo
 		pixelWidth = 2 * fi.Location.Radius / float64(minInt(nX, nY))
 		center     = fi.Location.Center
 	)
@@ -38,9 +38,9 @@ func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int
 	)
 
 	si := newSyncImage(m)
-	c := newColorСomputer(params, transform)
+	c := newColorСomputer(config, transform)
 
-	wg := new(sync.WaitGroup)
+	var wg sync.WaitGroup
 	points := make(chan int)
 
 	for _, yIn := range yIns {
@@ -55,7 +55,7 @@ func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int
 			)
 
 			wg.Add(1)
-			go renderRectangle(wg, r, cc, si, points)
+			go renderRectangle(&wg, r, cc, si, points)
 		}
 	}
 
@@ -64,26 +64,25 @@ func RenderImageRGBA(m *image.RGBA, params Parameters, progress func(percent int
 
 	total := nX * nY
 	count := 0
+progressLoop:
 	for {
 		select {
 		case <-ticker.C:
 			percent := count * 100 / total
 			progress(percent)
-			if count >= total {
-				goto stop
-			}
 
 		case n := <-points:
 			count += n
+			if count >= total {
+				progress(100) // 100%
+				break progressLoop
+			}
 		}
 	}
-stop:
 	wg.Wait()
 }
 
 func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, si *syncImage, points chan<- int) {
-
-	defer wg.Done()
 
 	var (
 		y0 = r.Min.Y
@@ -107,4 +106,5 @@ func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, s
 	}
 
 	si.Draw(r, ti)
+	wg.Done()
 }

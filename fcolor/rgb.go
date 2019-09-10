@@ -24,11 +24,11 @@ func (c RGB) MarshalJSON() ([]byte, error) {
 
 	const k = math.MaxUint8
 
-	var r, g, b uint8
-
-	r = uint8(crop01(c.R) * k)
-	g = uint8(crop01(c.G) * k)
-	b = uint8(crop01(c.B) * k)
+	var (
+		r = uint8(cropFloat64(c.R, 0, 1) * k)
+		g = uint8(cropFloat64(c.G, 0, 1) * k)
+		b = uint8(cropFloat64(c.B, 0, 1) * k)
+	)
 
 	s := rgb_to_str(r, g, b)
 
@@ -60,12 +60,16 @@ func (c *RGB) UnmarshalJSON(data []byte) error {
 
 func (c RGB) Norm() RGB {
 	return RGB{
-		R: crop01(c.R),
-		G: crop01(c.G),
-		B: crop01(c.B),
+		R: cropFloat64(c.R, 0, 1),
+		G: cropFloat64(c.G, 0, 1),
+		B: cropFloat64(c.B, 0, 1),
 	}
 }
 
+// t=[0..1]
+// t=0, c0
+// t=1, c1
+// t=0.5, (c0 * 0.5) + (c1 * 0.5)
 func LerpRGB(c0, c1 RGB, t float64) RGB {
 	return RGB{
 		R: lerp(c0.R, c1.R, t),

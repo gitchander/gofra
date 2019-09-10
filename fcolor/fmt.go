@@ -9,7 +9,7 @@ import (
 
 const (
 	formatDecRGB = "%d %d %d"
-	formatHexRGB = "#%02X%02X%02X"
+	formatHexRGB = "#%02x%02x%02x"
 )
 
 var (

@@ -47,7 +47,7 @@ func main() {
 		{
 			Name:      "default",
 			ShortName: "d",
-			Usage:     "reset params",
+			Usage:     "reset config",
 			Action:    actionDefault,
 		},
 		{

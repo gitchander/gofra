@@ -2,8 +2,7 @@ package gofra
 
 import (
 	"encoding/json"
-	"errors"
-	"strings"
+	"fmt"
 )
 
 type AntiAliasing int
@@ -16,48 +15,49 @@ const (
 	AA_25X
 )
 
-var key_AntiAliasing = map[AntiAliasing]string{
-	AA_NONE: "NONE",
-	AA_4X:   "4X",
-	AA_9X:   "9X",
-	AA_16X:  "16X",
-	AA_25X:  "25X",
+const (
+	name_AA_NONE = "none"
+	name_AA_4X   = "4x"
+	name_AA_9X   = "9x"
+	name_AA_16X  = "16x"
+	name_AA_25X  = "25x"
+)
+
+var aaNames = map[AntiAliasing]string{
+	AA_NONE: name_AA_NONE,
+	AA_4X:   name_AA_4X,
+	AA_9X:   name_AA_9X,
+	AA_16X:  name_AA_16X,
+	AA_25X:  name_AA_25X,
 }
 
-var val_AntiAliasing = map[string]AntiAliasing{
-	"NONE": AA_NONE,
-	"4X":   AA_4X,
-	"9X":   AA_9X,
-	"16X":  AA_16X,
-	"25X":  AA_25X,
+var aaValues = map[string]AntiAliasing{
+	name_AA_NONE: AA_NONE,
+	name_AA_4X:   AA_4X,
+	name_AA_9X:   AA_9X,
+	name_AA_16X:  AA_16X,
+	name_AA_25X:  AA_25X,
 }
 
 func (aa AntiAliasing) MarshalJSON() ([]byte, error) {
-
-	s, ok := key_AntiAliasing[aa]
+	value := aa
+	s, ok := aaNames[value]
 	if !ok {
-		return nil, errors.New("AntiAliasing.MarshalJSON")
+		return nil, fmt.Errorf("gofra.AntiAliasing.MarshalJSON: undefined value %d", value)
 	}
-
 	return json.Marshal(s)
 }
 
 func (aa *AntiAliasing) UnmarshalJSON(data []byte) error {
-
-	var s string
-
-	err := json.Unmarshal(data, &s)
+	var name string
+	err := json.Unmarshal(data, &name)
 	if err != nil {
 		return err
 	}
-
-	s = strings.ToUpper(s)
-	v, ok := val_AntiAliasing[s]
+	value, ok := aaValues[name]
 	if !ok {
-		return errors.New("AntiAliasing.UnmarshalJSON")
+		return fmt.Errorf("gofra.AntiAliasing.UnmarshalJSON: undefined name %q", name)
 	}
-
-	*aa = v
-
+	*aa = value
 	return nil
 }

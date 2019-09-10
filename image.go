@@ -41,7 +41,7 @@ func NewImageRGBA(size image.Point) *image.RGBA {
 	return image.NewRGBA(image.Rect(0, 0, Dx, Dy))
 }
 
-func ImageSaveToPNG(m image.Image, filename string) error {
+func ImageSaveToPNG(filename string, m image.Image) error {
 
 	file, err := os.Create(filename)
 	if err != nil {

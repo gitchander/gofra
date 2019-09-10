@@ -2,7 +2,6 @@ package gofra
 
 import (
 	"image/color"
-	"math"
 
 	. "github.com/gitchander/gofra/complex"
 
@@ -26,7 +25,10 @@ func (c aliasingСomputer) colorСompute(x, y int) color.RGBA {
 	var Z Complex
 	Z.Re, Z.Im = c.transform.TransformPoint(float64(x), float64(y))
 	iter := TraceOrbit(c.orbitTracer, Z, c.iterations)
-	return fcolorToRGBA(c.colorTable[iter])
+
+	fc := c.colorTable[iter]
+
+	return color.RGBAModel.Convert(fc).(color.RGBA)
 }
 
 func (c aliasingСomputer) Clone() colorСomputer {
@@ -66,7 +68,9 @@ func (c antiAliasingСomputer) colorСompute(x, y int) color.RGBA {
 		c.spColors[i] = c.colorTable[iter]
 	}
 
-	return fcolorToRGBA(fcolor.MixRGB(c.spColors))
+	fc := fcolor.MixRGB(c.spColors)
+
+	return color.RGBAModel.Convert(fc).(color.RGBA)
 }
 
 func (c antiAliasingСomputer) Clone() colorСomputer {
@@ -84,16 +88,16 @@ func (c antiAliasingСomputer) Clone() colorСomputer {
 	return v
 }
 
-func newColorСomputer(params Parameters, transform math2d.Matrix) colorСomputer {
+func newColorСomputer(config Config, transform math2d.Matrix) colorСomputer {
 
 	ac := aliasingСomputer{
-		iterations:  params.Calculation.Iterations,
-		colorTable:  newColorTable(params.Calculation.Iterations, params.Palette),
-		orbitTracer: newOrbitTracer(params.FractalInfo),
+		iterations:  config.Calculation.Iterations,
+		colorTable:  newColorTable(config.Calculation.Iterations, config.Palette),
+		orbitTracer: newOrbitTracer(config.FractalInfo),
 		transform:   transform,
 	}
 
-	spTable := makeSubpixelTable(params.Calculation.AntiAliasing)
+	spTable := makeSubpixelTable(config.Calculation.AntiAliasing)
 	if len(spTable) == 0 {
 		return ac
 	}
@@ -102,15 +106,5 @@ func newColorСomputer(params Parameters, transform math2d.Matrix) colorСompute
 		aliasingСomputer: ac,
 		spTable:          spTable,
 		spColors:         make([]fcolor.RGB, len(spTable)),
-	}
-}
-
-func fcolorToRGBA(c fcolor.RGB) color.RGBA {
-	const k = math.MaxUint8
-	return color.RGBA{
-		R: uint8(c.R * k),
-		G: uint8(c.G * k),
-		B: uint8(c.B * k),
-		A: k,
 	}
 }

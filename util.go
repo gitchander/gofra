@@ -23,3 +23,16 @@ func nearDivs(x int) (a, b int) {
 func degToRad(deg float64) float64 {
 	return deg * math.Pi / 180
 }
+
+func mod(a, b int) int {
+	m := a % b
+	if m < 0 {
+		m += b
+	}
+	return m
+}
+
+// [0..360)
+func angleDegNorm(a int) int {
+	return mod(a, 360)
+}

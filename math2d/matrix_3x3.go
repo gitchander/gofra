@@ -83,19 +83,19 @@ func (m *Matrix3x3) Scale(x, y float64) {
 func (m *Matrix3x3) Rotate(angle float64) {
 	var n Matrix3x3
 	n.InitRotate(angle)
-	mul3x3(m[:], n[:], m[:])
+	mul_3x3(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x3) ReflectAxisX() {
 	var n Matrix3x3
 	n.InitReflectAxisX()
-	mul3x3(m[:], n[:], m[:])
+	mul_3x3(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x3) ReflectAxisY() {
 	var n Matrix3x3
 	n.InitReflectAxisY()
-	mul3x3(m[:], n[:], m[:])
+	mul_3x3(m[:], n[:], m[:])
 }
 
 // matrix * vector
@@ -128,7 +128,7 @@ func (m *Matrix3x3) Invert() {
 }
 
 // z = x * y
-func mul3x3(x, y, z []float64) {
+func mul_3x3(x, y, z []float64) {
 
 	a, b, c := x[0], x[1], x[2]
 

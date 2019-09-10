@@ -28,7 +28,8 @@ func newColorTable(iterations int, pal Palette) []fcolor.RGB {
 	n := iterations
 	p := make([]fcolor.RGB, n+1)
 
-	clerp := fcolor.LerpRGB
+	//clerp := fcolor.LerpRGB
+	clerp := fcolor.SinerpRGB
 
 	for i := 0; i < n; i++ {
 

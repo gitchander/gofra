@@ -174,11 +174,17 @@ type Phoenix struct {
 }
 
 var PhoenixDefault = Phoenix{
-	C: Complex{Re: 0.56667, Im: -0.5},
+	C: Complex{
+		Re: 0.56667,
+		Im: -0.5,
+	},
 }
 
 func (f *Phoenix) Init(Z Complex) {
-	f.prevZ = Complex{0, 0}
+	f.prevZ = Complex{
+		Re: 0,
+		Im: 0,
+	}
 }
 
 func (f *Phoenix) Next(Z Complex) Complex {

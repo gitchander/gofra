@@ -7,44 +7,41 @@ import (
 	"github.com/gitchander/gofra"
 )
 
-func newParamsFromFile(fileName string) (*gofra.Parameters, error) {
-	var p gofra.Parameters
-	if err := p.LoadFromFile(fileName); err != nil {
+func LoadConfigFromFile(fileName string) (*gofra.Config, error) {
+	var c gofra.Config
+	err := gofra.LoadFromJsonFile(fileName, &c)
+	if err != nil {
 		return nil, err
 	}
-	return &p, nil
+	return &c, nil
 }
 
 func coreDefault(configName string) error {
-	params := gofra.DefaultParameters
-	return params.SaveToFile(configName)
+	c := gofra.DefaultConfig
+	return gofra.SaveToJsonFile(configName, c)
 }
 
 func coreRender(configName, imageName string) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
 
 	size := image.Point{
-		X: params.ImageSize.Width,
-		Y: params.ImageSize.Height,
+		X: config.ImageSize.Width,
+		Y: config.ImageSize.Height,
 	}
 	m := gofra.NewImageRGBA(size)
 
-	renderWithProgress(m, params)
+	renderWithProgress(m, config)
 
-	if err := gofra.ImageSaveToPNG(m, imageName); err != nil {
-		return err
-	}
-
-	return nil
+	return gofra.ImageSaveToPNG(imageName, m)
 }
 
 func coreIter(configName string, n int) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
@@ -53,39 +50,38 @@ func coreIter(configName string, n int) error {
 		return errors.New("iter number < 1")
 	}
 
-	params.Calculation.Iterations = n
+	config.Calculation.Iterations = n
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }
 
 func coreScale(configName string, scale float64) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
 
-	params.FractalInfo.Location.Radius /= scale
+	config.FractalInfo.Location.Radius /= scale
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }
 
 func coreRotate(configName string, angle int) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
 
-	anglePrev := params.FractalInfo.Location.AngleDeg
-	params.FractalInfo.Location.AngleDeg = angleDegNorm(anglePrev + angle)
+	config.RotateDeg(angle)
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }
 
 func coreMove1(configName string, x, y float64) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
@@ -93,21 +89,21 @@ func coreMove1(configName string, x, y float64) error {
 	x = cropFloat64(x, -1, +1)
 	y = cropFloat64(y, -1, +1)
 
-	params.MoveRelativeLocation(x, y)
+	config.MoveRelativeLocation(x, y)
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }
 
 func coreMove2(configName string, x, y float64) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
 
 	var (
-		dX = params.ImageSize.Width
-		dY = params.ImageSize.Height
+		dX = config.ImageSize.Width
+		dY = config.ImageSize.Height
 
 		minXY = minInt(dX, dY)
 	)
@@ -115,22 +111,22 @@ func coreMove2(configName string, x, y float64) error {
 	x *= float64(dX) / float64(minXY)
 	y *= float64(dY) / float64(minXY)
 
-	params.MoveRelativeLocation(x, y)
+	config.MoveRelativeLocation(x, y)
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }
 
 func corePalette(configName string, Period, Shift float64) error {
 
-	params, err := newParamsFromFile(configName)
+	config, err := LoadConfigFromFile(configName)
 	if err != nil {
 		return err
 	}
 
-	p := &(params.Palette)
+	p := &(config.Palette)
 
 	p.Period = Period
 	p.Shift = Shift
 
-	return params.SaveToFile(configName)
+	return gofra.SaveToJsonFile(configName, config)
 }

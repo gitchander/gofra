@@ -4,33 +4,28 @@
 		"height": 512
 	},
 	"fractal_info": {
-		"formula": "phoenix",
+		"formula": "mandelbrot",
 		"location": {
 			"center": {
-				"re": 0.35,
-				"im": 0.7
+				"re": -0.7499809592263773,
+				"im": 0.007780306594213471
 			},
-			"radius": 0.25,
+			"radius": 9.094947017729282e-11,
 			"angle_deg": 0
 		},
-		"parameters": [
-			{
-				"re": 0.56667,
-				"im": -0.5
-			}
-		]
+		"parameters": null
 	},
 	"calculation": {
-		"iterations": 1000,
-		"anti_aliasing": "16X"
+		"iterations": 50000,
+		"anti_aliasing": "16x"
 	},
 	"palette": {
 		"colors": [
-			"#FFFFFF",
+			"#ffffff",
 			"#000000"
 		],
 		"space_color": "#000000",
-		"period": 30,
+		"period": 8000,
 		"shift": 0
 	}
 }

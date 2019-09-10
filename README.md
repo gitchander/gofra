@@ -63,31 +63,43 @@ Also it makes render.
 
 For move center position used command move x y, where x and y relative coordinates.
 The coordinates encodes with next characters:
+```
 'm' - minus
 'z' - 0.0   // zero    = 0
 'w' - 1.0   // whole   = 1
 'h' - 0.5   // half    = (1 / 2)
 'q' - 0.25  // quarter = (1 / 4)
 'e' - 0.125 // eighth  = (1 / 8)
+```
 
 Examples:
 
 ```
 ./gofra move z z
+# x = 0, y = 0
 ```
-x = 0, y = 0
 
 ```
 ./gofra move h mw
+# x = 0.5, y = -1
 ```
-x = 0.5, y = -1
 
 ```
 ./gofra move mq e
+# x = -0.25, y = 0.125
 ```
-x = -0.25, y = 0.125
 
 ```
 ./gofra move hq z
+# x = 0.75, y = 0
 ```
-x = 0.75, y = 0
+
+---
+
+### Images
+
+![fractal-1](images/fractal_001.png)
+![fractal-2](images/fractal_002.png)
+![fractal-3](images/fractal_003.png)
+![fractal-4](images/fractal_004.png)
+![fractal-5](images/fractal_005.png)
