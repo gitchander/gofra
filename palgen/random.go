@@ -22,15 +22,15 @@ func RandParams(r *rand.Rand, p *Params) {
 	p.A = Vec3{0.5, 0.5, 0.5}
 	p.B = Vec3{0.5, 0.5, 0.5}
 
-	if false {
-		const nC = 6
+	if true {
+		const nC = 5
 		p.C = Vec3{
 			0: float64(r.Intn(nC)),
 			1: float64(r.Intn(nC)),
 			2: float64(r.Intn(nC)),
 		}
 	} else {
-		const nC = 6
+		const nC = 5
 		p.C = Vec3{
 			0: r.Float64() * nC,
 			1: r.Float64() * nC,

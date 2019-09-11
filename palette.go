@@ -84,7 +84,7 @@ var DefaultPalette = Palette{
 		A: palgen.Vec3{0.5, 0.5, 0.5},
 		B: palgen.Vec3{0.5, 0.5, 0.5},
 		C: palgen.Vec3{1.0, 1.0, 1.0},
-		D: palgen.Vec3{0.00, 0.10, 0.20},
+		D: palgen.Vec3{0.0, 0.0, 0.0},
 	},
 	SpaceColor: fcolor.RGB{R: 0, G: 0, B: 0}, // black
 	Period:     30,

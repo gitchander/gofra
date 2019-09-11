@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"image"
 	"image/png"
 	"io/ioutil"
@@ -11,11 +13,14 @@ import (
 )
 
 func main() {
-	size := image.Point{512, 32}
+	size := image.Point{512, 64}
 	m := NewRGBASize(size)
 
-	//palgen.Draw1(m)
-	palgen.Draw2(m)
+	var p palgen.Params
+	palgen.RandParams(palgen.NewRandNow(), &p)
+	printJSON(p)
+
+	palgen.DrawPalette(m, p)
 
 	err := SaveImagePNG("palette.png", m)
 	checkError(err)
@@ -25,6 +30,12 @@ func checkError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func printJSON(v interface{}) {
+	data, err := json.MarshalIndent(v, "", "\t")
+	checkError(err)
+	fmt.Printf("%s\n", data)
 }
 
 func NewRGBASize(size image.Point) *image.RGBA {
