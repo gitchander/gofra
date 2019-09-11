@@ -3,7 +3,7 @@ package gofra
 import (
 	. "github.com/gitchander/gofra/complex"
 
-	"github.com/gitchander/gofra/fcolor"
+	//"github.com/gitchander/gofra/fcolor"
 	"github.com/gitchander/gofra/math2d"
 )
 
@@ -57,14 +57,7 @@ var DefaultConfig = Config{
 		Iterations:   100,
 		AntiAliasing: AA_NONE,
 	},
-	Palette: Palette{
-		Colors: []fcolor.RGB{
-			fcolor.RGB{R: 1, G: 1, B: 1}, // white
-			fcolor.RGB{R: 0, G: 0, B: 0}, // black
-		},
-		SpaceColor: fcolor.RGB{R: 0, G: 0, B: 0}, // black
-		Period:     30,
-	},
+	Palette: DefaultPalette,
 }
 
 // relative value
