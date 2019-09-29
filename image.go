@@ -1,11 +1,11 @@
 package gofra
 
 import (
-	"bufio"
+	"bytes"
 	"image"
 	"image/draw"
 	"image/png"
-	"os"
+	"io/ioutil"
 	"sync"
 )
 
@@ -41,16 +41,11 @@ func NewImageRGBA(size image.Point) *image.RGBA {
 	return image.NewRGBA(image.Rect(0, 0, Dx, Dy))
 }
 
-func ImageSaveToPNG(filename string, m image.Image) error {
-
-	file, err := os.Create(filename)
+func SaveImagePNG(filename string, m image.Image) error {
+	var buf bytes.Buffer
+	err := png.Encode(&buf, m)
 	if err != nil {
 		return err
 	}
-	defer file.Close()
-
-	w := bufio.NewWriter(file)
-	defer w.Flush()
-
-	return png.Encode(w, m)
+	return ioutil.WriteFile(filename, buf.Bytes(), 0666)
 }

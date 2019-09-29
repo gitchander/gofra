@@ -211,3 +211,40 @@ var shoftNameToCoef = map[byte]float64{
 	'q': 0.25,  // quarter = (1 / 4)
 	'e': 0.125, // eighth  = (1 / 8)
 }
+
+func actionMove4(c *cli.Context) {
+
+	// ./gofra move wasd
+
+	configName := c.Parent().String("config")
+
+	args := c.Args()
+
+	if len(args) < 1 {
+		log.Fatal("move need a parameter")
+	}
+
+	s := args[0]
+
+	var x, y float64
+	for _, c := range s {
+		switch c {
+		case 'w':
+			y += 0.5
+		case 'a':
+			x -= 0.5
+		case 's':
+			y -= 0.5
+		case 'd':
+			x += 0.5
+		}
+	}
+
+	factorX := x
+	factorY := y
+
+	err := coreMove1(configName, factorX, factorY)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}

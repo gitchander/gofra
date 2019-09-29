@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/urfave/cli"
+
+	"github.com/gitchander/gofra"
 )
 
 func actionDefault(c *cli.Context) {
@@ -40,7 +42,7 @@ func actionDraw(c *cli.Context) {
 }
 
 func actionMove(c *cli.Context) {
-	actionMove3(c)
+	actionMove4(c)
 	renderIfNeed(c)
 }
 
@@ -88,13 +90,36 @@ func actionPalette(c *cli.Context) {
 
 	args := c.Args()
 
-	palPeriod, err := strconv.ParseFloat(args[0], 64)
+	palPeriod, err := strconv.ParseFloat(args.Get(0), 64)
 	checkError(err)
 
-	palShift, err := strconv.ParseFloat(args[1], 64)
+	palShift, err := strconv.ParseFloat(args.Get(1), 64)
 	checkError(err)
 
 	err = corePalette(configName, palPeriod, palShift)
+	checkError(err)
+
+	renderIfNeed(c)
+}
+
+func actionRandomPalette(c *cli.Context) {
+
+	configName := c.Parent().String("config")
+
+	err := coreRandomPalette(configName)
+	checkError(err)
+
+	renderIfNeed(c)
+}
+
+func actionAntiAliasing(c *cli.Context) {
+
+	configName := c.Parent().String("config")
+
+	aa, err := gofra.ParseAntiAliasing(c.Args().First())
+	checkError(err)
+
+	err = coreAntiAliasing(configName, aa)
 	checkError(err)
 
 	renderIfNeed(c)

@@ -26,6 +26,27 @@ func TraceOrbit(ot OrbitTracer, Z Complex, n int) int {
 	return n
 }
 
+/*
+// Escape time algorithm
+
+type Orbita interface {
+	//Done() bool
+	Escape() bool
+
+	Next()
+}
+
+func Trace(p Orbita, n int) int {
+	for i := 0; i < n; i++ {
+		if p.Escape() {
+			return i
+		}
+		p.Next()
+	}
+	return -1
+}
+*/
+
 func newOrbitTracer(fi FractalInfo) (t OrbitTracer) {
 
 	var C Complex

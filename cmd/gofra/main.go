@@ -86,6 +86,18 @@ func main() {
 			Usage:     "set palette period and shift",
 			Action:    actionPalette,
 		},
+		{
+			Name:      "random_palette",
+			ShortName: "randpal",
+			Usage:     "random palette",
+			Action:    actionRandomPalette,
+		},
+		{
+			Name:      "anti_aliasing",
+			ShortName: "antial",
+			Usage:     "anti-aliasing",
+			Action:    actionAntiAliasing,
+		},
 	}
 
 	app.Run(os.Args)

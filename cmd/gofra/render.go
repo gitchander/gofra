@@ -18,7 +18,7 @@ func renderWithProgress(m *image.RGBA, c *gofra.Config) {
 
 	bar := p.AddBar(int64(total),
 		mpb.PrependDecorators(
-			decor.Name("Render fractal:", decor.WC{W: 0, C: 0}),
+			decor.Name("Render fractal: ", decor.WC{W: 0, C: 0}),
 			decor.Percentage(decor.WC{W: 0, C: 0}),
 		),
 		mpb.AppendDecorators(

@@ -5,6 +5,7 @@ import (
 	"image"
 
 	"github.com/gitchander/gofra"
+	"github.com/gitchander/gofra/palgen"
 )
 
 func LoadConfigFromFile(fileName string) (*gofra.Config, error) {
@@ -36,7 +37,7 @@ func coreRender(configName, imageName string) error {
 
 	renderWithProgress(m, config)
 
-	return gofra.ImageSaveToPNG(imageName, m)
+	return gofra.SaveImagePNG(imageName, m)
 }
 
 func coreIter(configName string, n int) error {
@@ -127,6 +128,33 @@ func corePalette(configName string, Period, Shift float64) error {
 
 	p.Period = Period
 	p.Shift = Shift
+
+	return gofra.SaveToJsonFile(configName, config)
+}
+
+func coreRandomPalette(configName string) error {
+
+	config, err := LoadConfigFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	p := &(config.Palette)
+
+	r := palgen.NewRandNow()
+	palgen.RandParams(r, &(p.Params))
+
+	return gofra.SaveToJsonFile(configName, config)
+}
+
+func coreAntiAliasing(configName string, aa gofra.AntiAliasing) error {
+
+	config, err := LoadConfigFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	config.Calculation.AntiAliasing = aa
 
 	return gofra.SaveToJsonFile(configName, config)
 }

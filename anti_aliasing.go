@@ -5,14 +5,68 @@ import (
 	"fmt"
 )
 
+// Anti-aliasing
+
+// https://en.wikipedia.org/wiki/Spatial_anti-aliasing
+// https://en.wikipedia.org/wiki/Multisample_anti-aliasing
+// https://en.wikipedia.org/wiki/Supersampling
+
+/*
+
++---+
+|   |
++---+
+
+4x - 2*2
++---+---+
+|   |   |
++---+---+
+|   |   |
++---+---+
+
+9x - 3*3
++---+---+---+
+|   |   |   |
++---+---+---+
+|   |   |   |
++---+---+---+
+|   |   |   |
++---+---+---+
+
+16x - 4*4
++---+---+---+---+
+|   |   |   |   |
++---+---+---+---+
+|   |   |   |   |
++---+---+---+---+
+|   |   |   |   |
++---+---+---+---+
+|   |   |   |   |
++---+---+---+---+
+
+25x - 5*5
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+|   |   |   |   |   |
++---+---+---+---+---+
+
+*/
+
 type AntiAliasing int
 
 const (
 	AA_NONE AntiAliasing = iota
-	AA_4X
-	AA_9X
-	AA_16X
-	AA_25X
+	AA_4X                // 4 samples per pixel
+	AA_9X                // 9 samples per pixel
+	AA_16X               // 16 samples per pixel
+	AA_25X               // 25 samples per pixel
 )
 
 const (
@@ -39,6 +93,14 @@ var aaValues = map[string]AntiAliasing{
 	name_AA_25X:  AA_25X,
 }
 
+func (aa AntiAliasing) String() string {
+	name, ok := aaNames[aa]
+	if ok {
+		return name
+	}
+	return fmt.Sprintf("AntiAliasing(%d)", aa)
+}
+
 func (aa AntiAliasing) MarshalJSON() ([]byte, error) {
 	value := aa
 	s, ok := aaNames[value]
@@ -60,4 +122,12 @@ func (aa *AntiAliasing) UnmarshalJSON(data []byte) error {
 	}
 	*aa = value
 	return nil
+}
+
+func ParseAntiAliasing(s string) (AntiAliasing, error) {
+	value, ok := aaValues[s]
+	if !ok {
+		return 0, fmt.Errorf("gofra.ParseAntiAliasing: undefined name %q", s)
+	}
+	return value, nil
 }
