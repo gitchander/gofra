@@ -43,7 +43,6 @@ func actionDraw(c *cli.Context) {
 
 func actionMove(c *cli.Context) {
 	actionMove4(c)
-	renderIfNeed(c)
 }
 
 func actionRotate(c *cli.Context) {

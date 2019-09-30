@@ -1,43 +1,43 @@
 package palgen
 
 import (
+	"fmt"
 	"math/rand"
-	"time"
 )
-
-func NewRandSeed(seed int64) *rand.Rand {
-	return rand.New(rand.NewSource(seed))
-}
-
-func NewRandTime(t time.Time) *rand.Rand {
-	return NewRandSeed(t.UTC().UnixNano())
-}
-
-func NewRandNow() *rand.Rand {
-	return NewRandTime(time.Now())
-}
 
 func RandParams(r *rand.Rand, p *Params) {
 
 	p.A = Vec3{0.5, 0.5, 0.5}
 	p.B = Vec3{0.5, 0.5, 0.5}
 
-	if true {
-		const nC = 5
+	const n = 7
+
+	switch 0 {
+
+	case 0:
 		p.C = Vec3{
-			0: float64(r.Intn(nC)),
-			1: float64(r.Intn(nC)),
-			2: float64(r.Intn(nC)),
+			0: float64(r.Intn(n)),
+			1: float64(r.Intn(n)),
+			2: float64(r.Intn(n)),
 		}
-	} else {
-		const nC = 5
+
+	case 1:
 		p.C = Vec3{
-			0: r.Float64() * nC,
-			1: r.Float64() * nC,
-			2: r.Float64() * nC,
+			0: float64(r.Intn(2*n)) / 2,
+			1: float64(r.Intn(2*n)) / 2,
+			2: float64(r.Intn(2*n)) / 2,
+		}
+		fmt.Println(p.C)
+
+	case 2:
+		p.C = Vec3{
+			0: r.Float64() * n,
+			1: r.Float64() * n,
+			2: r.Float64() * n,
 		}
 	}
 
+	// Phases
 	// random value in range [0..1]
 	p.D = Vec3{
 		0: r.Float64(),

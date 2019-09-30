@@ -32,8 +32,8 @@ func palette(a, b, c, d Vec3, t float64) Vec3 {
 }
 
 func clampFloat64(x float64, min, max float64) float64 {
-	if max < min {
-		return 0
+	if max < min { // It is empty intarval
+		return 0 // Default value is zero
 	}
 	if x < min {
 		x = min

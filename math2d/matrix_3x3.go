@@ -83,36 +83,36 @@ func (m *Matrix3x3) Scale(x, y float64) {
 func (m *Matrix3x3) Rotate(angle float64) {
 	var n Matrix3x3
 	n.InitRotate(angle)
-	mul_3x3(m[:], n[:], m[:])
+	mat3x3Mul(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x3) ReflectAxisX() {
 	var n Matrix3x3
 	n.InitReflectAxisX()
-	mul_3x3(m[:], n[:], m[:])
+	mat3x3Mul(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x3) ReflectAxisY() {
 	var n Matrix3x3
 	n.InitReflectAxisY()
-	mul_3x3(m[:], n[:], m[:])
+	mat3x3Mul(m[:], n[:], m[:])
 }
 
 // matrix * vector
 func (m *Matrix3x3) mulVectorL(x, y float64) (tx, ty float64) {
-	var v, w vector3
-	v.setXY(x, y)
-	matrix_mul_vector(m[:], v[:], w[:])
-	tx, ty = w.getXY()
+	v := Vector3XY(x, y)
+	var w Vector3
+	matrix3x3MulVector3(m[:], v[:], w[:])
+	tx, ty = w.XY()
 	return
 }
 
 // vector * matrix
 func (m *Matrix3x3) mulVectorR(x, y float64) (tx, ty float64) {
-	var v, w vector3
-	v.setXY(x, y)
-	vector_mul_matrix(v[:], m[:], w[:])
-	tx, ty = w.getXY()
+	v := Vector3XY(x, y)
+	var w Vector3
+	vector3MulMatrix3x3(v[:], m[:], w[:])
+	tx, ty = w.XY()
 	return
 }
 
@@ -128,7 +128,7 @@ func (m *Matrix3x3) Invert() {
 }
 
 // z = x * y
-func mul_3x3(x, y, z []float64) {
+func mat3x3Mul(x, y, z []float64) {
 
 	a, b, c := x[0], x[1], x[2]
 
@@ -150,7 +150,7 @@ func mul_3x3(x, y, z []float64) {
 }
 
 // w = v * m
-func vector_mul_matrix(v, m, w []float64) {
+func vector3MulMatrix3x3(v, m, w []float64) {
 
 	a, b, c := v[0], v[1], v[2]
 
@@ -160,7 +160,7 @@ func vector_mul_matrix(v, m, w []float64) {
 }
 
 // w = m * v
-func matrix_mul_vector(m, v, w []float64) {
+func matrix3x3MulVector3(m, v, w []float64) {
 
 	a, b, c := v[0], v[1], v[2]
 

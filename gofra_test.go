@@ -1,21 +1,18 @@
 package gofra
 
 import (
-	"math/rand"
 	"testing"
-	"time"
 
 	. "github.com/gitchander/gofra/complex"
+	"github.com/gitchander/gofra/utils/random"
 )
-
-var seedBench int64 = rand.Int63()
 
 type traceOrbitFn func(Z Complex, n int) int
 
 func benchmarkTraceOrbit(fn traceOrbitFn, b *testing.B) {
 
 	n := 100
-	r := rand.New(rand.NewSource(seedBench))
+	r := random.NewRandNow()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -59,7 +56,7 @@ func testTraceOrbit(fns []traceOrbitFn, t *testing.T) {
 	n := len(fns)
 	var in = make([]int, n)
 
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	r := random.NewRandNow()
 
 	for i := 0; i < 100000; i++ {
 

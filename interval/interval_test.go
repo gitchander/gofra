@@ -3,7 +3,8 @@ package interval
 import (
 	"math/rand"
 	"testing"
-	"time"
+
+	"github.com/gitchander/gofra/utils/random"
 )
 
 func TestQuoRem(t *testing.T) {
@@ -20,7 +21,7 @@ func TestQuoRem(t *testing.T) {
 		return int(u)
 	}
 
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	r := random.NewRandNow()
 
 	var quo, rem [2]int
 
@@ -53,7 +54,7 @@ func TestInterval(t *testing.T) {
 		return i
 	}
 
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	r := random.NewRandNow()
 
 	for i := 0; i < 100000; i++ {
 

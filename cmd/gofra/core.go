@@ -2,10 +2,13 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"image"
+	"path/filepath"
 
 	"github.com/gitchander/gofra"
 	"github.com/gitchander/gofra/palgen"
+	"github.com/gitchander/gofra/utils/random"
 )
 
 func LoadConfigFromFile(fileName string) (*gofra.Config, error) {
@@ -37,7 +40,15 @@ func coreRender(configName, imageName string) error {
 
 	renderWithProgress(m, config)
 
-	return gofra.SaveImagePNG(imageName, m)
+	ext := filepath.Ext(imageName)
+	switch ext {
+	case ".png":
+		return gofra.SaveImagePNG(imageName, m)
+	case ".jpeg":
+		return gofra.SaveImageJPEG(imageName, m)
+	default:
+		return fmt.Errorf("invalid image file ext %q", ext)
+	}
 }
 
 func coreIter(configName string, n int) error {
@@ -141,7 +152,7 @@ func coreRandomPalette(configName string) error {
 
 	p := &(config.Palette)
 
-	r := palgen.NewRandNow()
+	r := random.NewRandNow()
 	palgen.RandParams(r, &(p.Params))
 
 	return gofra.SaveToJsonFile(configName, config)

@@ -72,19 +72,19 @@ func (m *Matrix3x2) Scale(x, y float64) {
 func (m *Matrix3x2) Rotate(angle float64) {
 	var r Matrix3x2
 	r.InitRotate(angle)
-	mul_3x2(m[:], r[:], m[:])
+	mat3x2Mul(m[:], r[:], m[:])
 }
 
 func (m *Matrix3x2) ReflectAxisX() {
 	var n Matrix3x2
 	n.InitReflectAxisX()
-	mul_3x2(m[:], n[:], m[:])
+	mat3x2Mul(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x2) ReflectAxisY() {
 	var n Matrix3x2
 	n.InitReflectAxisY()
-	mul_3x2(m[:], n[:], m[:])
+	mat3x2Mul(m[:], n[:], m[:])
 }
 
 func (m *Matrix3x2) TransformPoint(x, y float64) (tx, ty float64) {
@@ -97,7 +97,7 @@ func (m *Matrix3x2) TransformPoint(x, y float64) (tx, ty float64) {
 // (z == x) || (z != x)
 // (z != y)
 
-func mul_3x2(x, y, z []float64) {
+func mat3x2Mul(x, y, z []float64) {
 
 	a, b := x[0], x[1]
 

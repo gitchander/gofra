@@ -247,4 +247,6 @@ func actionMove4(c *cli.Context) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	renderIfNeed(c)
 }

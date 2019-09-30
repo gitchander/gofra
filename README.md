@@ -2,7 +2,7 @@
 
 `gofra` is simple fractal render library.
 
-![default fractal](images/default-ms.png)
+![default fractal](images/fractal_default.jpeg)
 
 ## Installation
 
@@ -61,45 +61,46 @@ Also it makes render.
 
 ### Move position
 
-For move center position used command move x y, where x and y relative coordinates.
-The coordinates encodes with next characters:
+For move center position used command move [w,a,s,d], where w,a,s,d are diractions like arrows.
+The directions encodes with next characters:
 ```
-'m' - minus
-'z' - 0.0   // zero    = 0
-'w' - 1.0   // whole   = 1
-'h' - 0.5   // half    = (1 / 2)
-'q' - 0.25  // quarter = (1 / 4)
-'e' - 0.125 // eighth  = (1 / 8)
+'w' -> y += 0.5 // move up
+'a' -> x -= 0.5 // move left
+'s' -> y -= 0.5 // move down
+'d' -> x += 0.5 // move right
 ```
 
 Examples:
 
 ```
-./gofra move z z
-# x = 0, y = 0
+./gofra move a
+# x = -0.5, y = 0
 ```
 
 ```
-./gofra move h mw
-# x = 0.5, y = -1
+./gofra move wd
+# x = 0.5, y = 0.5
 ```
 
 ```
-./gofra move mq e
-# x = -0.25, y = 0.125
+./gofra move sa
+# x = -0.5, y = -0.5
 ```
 
 ```
-./gofra move hq z
-# x = 0.75, y = 0
+./gofra move dds
+# x = 1.0, y = -0.5
 ```
 
 ---
 
 ### Images
 
-![fractal-1](images/fractal_001.png)
-![fractal-2](images/fractal_002.png)
-![fractal-3](images/fractal_003.png)
-![fractal-4](images/fractal_004.png)
-![fractal-5](images/fractal_005.png)
+![fractal-1](images/fractal_001.jpeg)
+![fractal-2](images/fractal_002.jpeg)
+![fractal-3](images/fractal_003.jpeg)
+![fractal-4](images/fractal_004.jpeg)
+![fractal-5](images/fractal_005.jpeg)
+![fractal-6](images/fractal_006.jpeg)
+![fractal-7](images/fractal_007.jpeg)
+![fractal-8](images/fractal_008.jpeg)

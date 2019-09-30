@@ -34,7 +34,7 @@ func main() {
 		},
 		cli.StringFlag{
 			Name:  "image",
-			Value: "fractal.png",
+			Value: "fractal.jpeg",
 			Usage: "destination image file name",
 		},
 		cli.BoolFlag{

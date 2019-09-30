@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image"
 	"image/draw"
+	"image/jpeg"
 	"image/png"
 	"io/ioutil"
 	"sync"
@@ -44,6 +45,15 @@ func NewImageRGBA(size image.Point) *image.RGBA {
 func SaveImagePNG(filename string, m image.Image) error {
 	var buf bytes.Buffer
 	err := png.Encode(&buf, m)
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(filename, buf.Bytes(), 0666)
+}
+
+func SaveImageJPEG(filename string, m image.Image) error {
+	var buf bytes.Buffer
+	err := jpeg.Encode(&buf, m, nil)
 	if err != nil {
 		return err
 	}
