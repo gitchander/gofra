@@ -15,18 +15,26 @@ type colorСomputer interface {
 }
 
 type aliasingСomputer struct {
-	iterations  int
-	colorTable  []fcolor.RGB
-	orbitTracer OrbitTracer
-	transform   math2d.Matrix
+	iterations   int
+	colorTable   []fcolor.RGB
+	spaceColor   fcolor.RGB
+	orbitFactory OrbitFactory
+	transform    math2d.Matrix
 }
 
 func (c aliasingСomputer) colorСompute(x, y int) color.RGBA {
 	var Z Complex
 	Z.Re, Z.Im = c.transform.TransformPoint(float64(x), float64(y))
-	iter := TraceOrbit(c.orbitTracer, Z, c.iterations)
 
-	fc := c.colorTable[iter]
+	orbit := c.orbitFactory.NewOrbit(Z)
+	iter := TraceOrbit(orbit, c.iterations)
+
+	var fc fcolor.RGB
+	if iter == -1 {
+		fc = c.spaceColor
+	} else {
+		fc = c.colorTable[iter]
+	}
 
 	return color.RGBAModel.Convert(fc).(color.RGBA)
 }
@@ -40,7 +48,9 @@ func (c aliasingСomputer) Clone() colorСomputer {
 	v.colorTable = make([]fcolor.RGB, len(c.colorTable))
 	copy(v.colorTable, c.colorTable)
 
-	v.orbitTracer = c.orbitTracer.Clone()
+	v.spaceColor = c.spaceColor
+
+	v.orbitFactory = c.orbitFactory
 
 	v.transform = c.transform
 
@@ -64,8 +74,17 @@ func (c antiAliasingСomputer) colorСompute(x, y int) color.RGBA {
 			float64(y)+dz.Y,
 		)
 
-		iter := TraceOrbit(c.orbitTracer, Z, c.iterations)
-		c.spColors[i] = c.colorTable[iter]
+		orbit := c.orbitFactory.NewOrbit(Z)
+		iter := TraceOrbit(orbit, c.iterations)
+
+		var fc fcolor.RGB
+		if iter == -1 {
+			fc = c.spaceColor
+		} else {
+			fc = c.colorTable[iter]
+		}
+
+		c.spColors[i] = fc
 	}
 
 	fc := fcolor.MixRGB(c.spColors)
@@ -91,10 +110,11 @@ func (c antiAliasingСomputer) Clone() colorСomputer {
 func newColorСomputer(config Config, transform math2d.Matrix) colorСomputer {
 
 	ac := aliasingСomputer{
-		iterations:  config.Calculation.Iterations,
-		colorTable:  newColorTable(config.Calculation.Iterations, config.Palette),
-		orbitTracer: newOrbitTracer(config.FractalInfo),
-		transform:   transform,
+		iterations:   config.Calculation.Iterations,
+		colorTable:   newColorTable(config.Calculation.Iterations, config.Palette),
+		spaceColor:   config.Palette.SpaceColor,
+		orbitFactory: newOrbitFactory(config.FractalInfo),
+		transform:    transform,
 	}
 
 	spTable := makeSubpixelTable(config.Calculation.AntiAliasing)

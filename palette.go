@@ -97,17 +97,14 @@ func newColorTable(iterations int, pal Palette) []fcolor.RGB {
 		pal.Period = 1
 	}
 
-	n := iterations
-	cs := make([]fcolor.RGB, n+1)
+	cs := make([]fcolor.RGB, iterations)
 
-	for i := 0; i < n; i++ {
-
+	for i := range cs {
 		t := (float64(i) + pal.Shift) / pal.Period
-
 		cs[i] = palgen.ColorByParams(pal.Params, t)
 	}
 
-	cs[n] = pal.SpaceColor.Norm()
+	// cs = append(cs, pal.SpaceColor.Norm())
 
 	return cs
 }
