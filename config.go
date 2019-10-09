@@ -42,7 +42,7 @@ var DefaultConfig = Config{
 		Height: 512,
 	},
 	FractalInfo: FractalInfo{
-		Formula: FM_MANDELBROT,
+		Formula: FormulaMandelbrot,
 		Location: Location{
 			Center: Complex{
 				Re: 0,

@@ -1,86 +1,95 @@
 package gofra
 
 import (
-	"encoding/json"
+	"encoding"
 	"fmt"
 )
 
 type Formula int
 
 const (
-	FM_MANDELBROT Formula = iota
-	FM_MANDELBROT_POW3
-	FM_MANDELBROT_POW4
-	FM_MANDELBROT_POW5
-	FM_MANDELBROT_POW6
-	FM_JULIA_SET
-	FM_PHOENIX
-	FM_BURNING_SHIP
-	FM_BURNING_SHIP_IM
-	FM_SPIDER
-	FM_TRICORN
+	FormulaMandelbrot Formula = iota
+	FormulaMandelbrotPow3
+	FormulaMandelbrotPow4
+	FormulaMandelbrotPow5
+	FormulaMandelbrotPow6
+	FormulaJuliaSet
+	FormulaPhoenix
+	FormulaBurningShip
+	FormulaBurningShipIm
+	FormulaSpider
+	FormulaTricorn
 )
 
-const (
-	name_MANDELBROT      = "mandelbrot"
-	name_MANDELBROT_POW3 = "mandelbrot-pow3"
-	name_MANDELBROT_POW4 = "mandelbrot-pow4"
-	name_MANDELBROT_POW5 = "mandelbrot-pow5"
-	name_MANDELBROT_POW6 = "mandelbrot-pow6"
-	name_JULIA_SET       = "julia-set"
-	name_PHOENIX         = "phoenix"
-	name_BURNING_SHIP    = "burning-ship"
-	name_BURNING_SHIP_IM = "burning-ship-im"
-	name_SPIDER          = "spider"
-	name_TRICORN         = "tricorn"
-)
-
-var fmNames = map[Formula]string{
-	FM_MANDELBROT:      name_MANDELBROT,
-	FM_MANDELBROT_POW3: name_MANDELBROT_POW3,
-	FM_MANDELBROT_POW4: name_MANDELBROT_POW4,
-	FM_MANDELBROT_POW5: name_MANDELBROT_POW5,
-	FM_MANDELBROT_POW6: name_MANDELBROT_POW6,
-	FM_JULIA_SET:       name_JULIA_SET,
-	FM_PHOENIX:         name_PHOENIX,
-	FM_BURNING_SHIP:    name_BURNING_SHIP,
-	FM_BURNING_SHIP_IM: name_BURNING_SHIP_IM,
-	FM_SPIDER:          name_SPIDER,
-	FM_TRICORN:         name_TRICORN,
+var namesFormula = map[Formula]string{
+	FormulaMandelbrot:     "mandelbrot",
+	FormulaMandelbrotPow3: "mandelbrot-pow3",
+	FormulaMandelbrotPow4: "mandelbrot-pow4",
+	FormulaMandelbrotPow5: "mandelbrot-pow5",
+	FormulaMandelbrotPow6: "mandelbrot-pow6",
+	FormulaJuliaSet:       "julia-set",
+	FormulaPhoenix:        "phoenix",
+	FormulaBurningShip:    "burning-ship",
+	FormulaBurningShipIm:  "burning-ship-im",
+	FormulaSpider:         "spider",
+	FormulaTricorn:        "tricorn",
 }
 
-var fmValues = map[string]Formula{
-	name_MANDELBROT:      FM_MANDELBROT,
-	name_MANDELBROT_POW3: FM_MANDELBROT_POW3,
-	name_MANDELBROT_POW4: FM_MANDELBROT_POW4,
-	name_MANDELBROT_POW5: FM_MANDELBROT_POW5,
-	name_MANDELBROT_POW6: FM_MANDELBROT_POW6,
-	name_JULIA_SET:       FM_JULIA_SET,
-	name_PHOENIX:         FM_PHOENIX,
-	name_BURNING_SHIP:    FM_BURNING_SHIP,
-	name_BURNING_SHIP_IM: FM_BURNING_SHIP_IM,
-	name_SPIDER:          FM_SPIDER,
-	name_TRICORN:         FM_TRICORN,
+var valuesFormula = map[string]Formula{
+	"mandelbrot":      FormulaMandelbrot,
+	"mandelbrot-pow3": FormulaMandelbrotPow3,
+	"mandelbrot-pow4": FormulaMandelbrotPow4,
+	"mandelbrot-pow5": FormulaMandelbrotPow5,
+	"mandelbrot-pow6": FormulaMandelbrotPow6,
+	"julia-set":       FormulaJuliaSet,
+	"phoenix":         FormulaPhoenix,
+	"burning-ship":    FormulaBurningShip,
+	"burning-ship-im": FormulaBurningShipIm,
+	"spider":          FormulaSpider,
+	"tricorn":         FormulaTricorn,
 }
 
-func (f Formula) MarshalJSON() ([]byte, error) {
+func _() {
+	var f Formula
+	var (
+		_ encoding.TextMarshaler   = f
+		_ encoding.TextUnmarshaler = &f
+	)
+}
+
+func (f Formula) String() string {
 	value := f
-	name, ok := fmNames[value]
-	if !ok {
-		return nil, fmt.Errorf("gofra.Formula.MarshalJSON: undefined value %d", value)
+	name, ok := namesFormula[value]
+	if ok {
+		return name
 	}
-	return json.Marshal(name)
+	return fmt.Sprintf("Formula(%d)", value)
 }
 
-func (f *Formula) UnmarshalJSON(data []byte) error {
-	var name string
-	err := json.Unmarshal(data, &name)
-	if err != nil {
-		return err
-	}
-	value, ok := fmValues[name]
+func ParseFormula(s string) (Formula, error) {
+	name := s
+	value, ok := valuesFormula[name]
 	if !ok {
-		return fmt.Errorf("gofra.Formula.UnmarshalJSON: undefined name %q", name)
+		return 0, fmt.Errorf("gofra.ParseFormula: undefined name %q", name)
+	}
+	return value, nil
+}
+
+func (f Formula) MarshalText() (text []byte, err error) {
+	value := f
+	name, ok := namesFormula[value]
+	if !ok {
+		return nil, fmt.Errorf("gofra.Formula.MarshalText: undefined value %d", value)
+	}
+	text = []byte(name)
+	return text, nil
+}
+
+func (f *Formula) UnmarshalText(text []byte) error {
+	name := string(text)
+	value, ok := valuesFormula[name]
+	if !ok {
+		return fmt.Errorf("gofra.Formula.UnmarshalText: undefined name %q", name)
 	}
 	*f = value
 	return nil

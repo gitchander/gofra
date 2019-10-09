@@ -10,6 +10,8 @@ import (
 // 	Escape() bool
 // }
 
+var complexZero = Complex{Re: 0, Im: 0}
+
 type Orbit interface {
 	Next() bool
 }
@@ -19,9 +21,9 @@ type OrbitFactory interface {
 }
 
 // Escape time algorithm
-func TraceOrbit(o Orbit, n int) int {
+func TraceOrbit(t Orbit, n int) int {
 	for i := 0; i < n; i++ {
-		if !o.Next() {
+		if !t.Next() {
 			return i
 		}
 	}
@@ -45,35 +47,35 @@ func newOrbitFactory(fi FractalInfo) (of OrbitFactory) {
 	}
 
 	switch fi.Formula {
-	case FM_MANDELBROT:
+	case FormulaMandelbrot:
 		of = FactoryMandelbrot{}
-	case FM_MANDELBROT_POW3:
+	case FormulaMandelbrotPow3:
 		of = FactoryMandelbrotPow3{}
-	case FM_MANDELBROT_POW4:
+	case FormulaMandelbrotPow4:
 		of = FactoryMandelbrotPow4{}
-	case FM_MANDELBROT_POW5:
+	case FormulaMandelbrotPow5:
 		of = FactoryMandelbrotPow5{}
-	case FM_MANDELBROT_POW6:
+	case FormulaMandelbrotPow6:
 		of = FactoryMandelbrotPow6{}
-	case FM_JULIA_SET:
+	case FormulaJuliaSet:
 		if C.Present {
 			of = FactoryJuliaSet{C: C.Value}
 		} else {
 			of = FactoryJuliaSet{C: JuliaSetDefaultConst}
 		}
-	case FM_PHOENIX:
+	case FormulaPhoenix:
 		if C.Present {
 			of = FactoryPhoenix{C: C.Value}
 		} else {
 			of = FactoryPhoenix{C: PhoenixDefaultConst}
 		}
-	case FM_BURNING_SHIP:
+	case FormulaBurningShip:
 		of = FactoryBurningShip{}
-	case FM_BURNING_SHIP_IM:
+	case FormulaBurningShipIm:
 		of = FactoryBurningShipIm{}
-	case FM_SPIDER:
+	case FormulaSpider:
 		of = FactorySpider{}
-	case FM_TRICORN:
+	case FormulaTricorn:
 		of = FactoryTricorn{}
 	default:
 		of = FactoryMandelbrot{}
@@ -92,6 +94,13 @@ type orbitMandelbrot struct {
 
 var _ Orbit = &orbitMandelbrot{}
 
+func newOrbitMandelbrot(C Complex) *orbitMandelbrot {
+	return &orbitMandelbrot{
+		Z: complexZero,
+		C: C,
+	}
+}
+
 func (p *orbitMandelbrot) Next() bool {
 	Z := p.Z
 	if Z.Norm() > 4.0 {
@@ -106,10 +115,7 @@ type FactoryMandelbrot struct{}
 var _ OrbitFactory = FactoryMandelbrot{}
 
 func (FactoryMandelbrot) NewOrbit(Z Complex) Orbit {
-	return &orbitMandelbrot{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitMandelbrot(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -121,6 +127,13 @@ type orbitMandelbrotPow3 struct {
 }
 
 var _ Orbit = &orbitMandelbrotPow3{}
+
+func newOrbitMandelbrotPow3(C Complex) *orbitMandelbrotPow3 {
+	return &orbitMandelbrotPow3{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitMandelbrotPow3) Next() bool {
 	Z := p.Z
@@ -136,10 +149,7 @@ type FactoryMandelbrotPow3 struct{}
 var _ OrbitFactory = FactoryMandelbrotPow3{}
 
 func (FactoryMandelbrotPow3) NewOrbit(Z Complex) Orbit {
-	return &orbitMandelbrotPow3{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitMandelbrotPow3(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -151,6 +161,13 @@ type orbitMandelbrotPow4 struct {
 }
 
 var _ Orbit = &orbitMandelbrotPow4{}
+
+func newOrbitMandelbrotPow4(C Complex) *orbitMandelbrotPow4 {
+	return &orbitMandelbrotPow4{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitMandelbrotPow4) Next() bool {
 	Z := p.Z
@@ -167,10 +184,7 @@ type FactoryMandelbrotPow4 struct{}
 var _ OrbitFactory = FactoryMandelbrotPow4{}
 
 func (FactoryMandelbrotPow4) NewOrbit(Z Complex) Orbit {
-	return &orbitMandelbrotPow4{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitMandelbrotPow4(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -182,6 +196,13 @@ type orbitMandelbrotPow5 struct {
 }
 
 var _ Orbit = &orbitMandelbrotPow5{}
+
+func newOrbitMandelbrotPow5(C Complex) *orbitMandelbrotPow5 {
+	return &orbitMandelbrotPow5{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitMandelbrotPow5) Next() bool {
 	Z := p.Z
@@ -198,10 +219,7 @@ type FactoryMandelbrotPow5 struct{}
 var _ OrbitFactory = FactoryMandelbrotPow5{}
 
 func (FactoryMandelbrotPow5) NewOrbit(Z Complex) Orbit {
-	return &orbitMandelbrotPow5{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitMandelbrotPow5(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -213,6 +231,13 @@ type orbitMandelbrotPow6 struct {
 }
 
 var _ Orbit = &orbitMandelbrotPow6{}
+
+func newOrbitMandelbrotPow6(C Complex) *orbitMandelbrotPow6 {
+	return &orbitMandelbrotPow6{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitMandelbrotPow6) Next() bool {
 	Z := p.Z
@@ -229,10 +254,7 @@ type FactoryMandelbrotPow6 struct{}
 var _ OrbitFactory = FactoryMandelbrotPow6{}
 
 func (FactoryMandelbrotPow6) NewOrbit(Z Complex) Orbit {
-	return &orbitMandelbrotPow6{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitMandelbrotPow6(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -243,6 +265,13 @@ type orbitJuliaSet struct {
 }
 
 var _ Orbit = &orbitJuliaSet{}
+
+func newOrbitJuliaSet(Z, C Complex) *orbitJuliaSet {
+	return &orbitJuliaSet{
+		Z: Z,
+		C: C,
+	}
+}
 
 func (p *orbitJuliaSet) Next() bool {
 	Z := p.Z
@@ -257,24 +286,15 @@ type FactoryJuliaSet struct {
 	C Complex
 }
 
-var JuliaSetDefaultConst = Complex{Re: -0.74543, Im: 0.11301}
-
-//---------------------------------------
-// "parameters": [
-// 	{
-// 		"re": -0.74543,
-// 		"im": 0.11301
-// 	}
-// ]
-//---------------------------------------
+var JuliaSetDefaultConst = Complex{
+	Re: -0.74543,
+	Im: 0.11301,
+}
 
 var _ OrbitFactory = FactoryJuliaSet{}
 
 func (f FactoryJuliaSet) NewOrbit(Z Complex) Orbit {
-	return &orbitJuliaSet{
-		Z: Z,
-		C: f.C,
-	}
+	return newOrbitJuliaSet(Z, f.C)
 }
 
 //------------------------------------------------------------------------------
@@ -286,6 +306,14 @@ type orbitPhoenix struct {
 }
 
 var _ Orbit = &orbitPhoenix{}
+
+func newOrbitPhoenix(Z, C Complex) *orbitPhoenix {
+	return &orbitPhoenix{
+		Z:     Z,
+		C:     C,
+		prevZ: complexZero,
+	}
+}
 
 func (p *orbitPhoenix) Next() bool {
 	Z := p.Z
@@ -301,25 +329,15 @@ type FactoryPhoenix struct {
 	C Complex
 }
 
-var PhoenixDefaultConst = Complex{Re: 0.56667, Im: -0.5}
-
-//---------------------------------------
-// "parameters": [
-// 	{
-// 		"re": 0.56667,
-// 		"im": -0.5
-// 	}
-// ]
-//---------------------------------------
+var PhoenixDefaultConst = Complex{
+	Re: 0.56667,
+	Im: -0.5,
+}
 
 var _ OrbitFactory = FactoryPhoenix{}
 
 func (f FactoryPhoenix) NewOrbit(Z Complex) Orbit {
-	return &orbitPhoenix{
-		Z:     Z,
-		C:     f.C,
-		prevZ: Complex{Re: 0, Im: 0},
-	}
+	return newOrbitPhoenix(Z, f.C)
 }
 
 //------------------------------------------------------------------------------
@@ -333,6 +351,13 @@ type orbitBurningShip struct {
 }
 
 var _ Orbit = &orbitBurningShip{}
+
+func newOrbitBurningShip(C Complex) *orbitBurningShip {
+	return &orbitBurningShip{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitBurningShip) Next() bool {
 	Z := p.Z
@@ -349,11 +374,8 @@ type FactoryBurningShip struct{}
 
 var _ OrbitFactory = FactoryBurningShip{}
 
-func (f FactoryBurningShip) NewOrbit(Z Complex) Orbit {
-	return &orbitBurningShip{
-		Z: Z,
-		C: Z,
-	}
+func (FactoryBurningShip) NewOrbit(Z Complex) Orbit {
+	return newOrbitBurningShip(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -364,6 +386,13 @@ type orbitBurningShipIm struct {
 }
 
 var _ Orbit = &orbitBurningShipIm{}
+
+func newOrbitBurningShipIm(C Complex) *orbitBurningShipIm {
+	return &orbitBurningShipIm{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitBurningShipIm) Next() bool {
 	Z := p.Z
@@ -380,10 +409,7 @@ type FactoryBurningShipIm struct{}
 var _ OrbitFactory = FactoryBurningShipIm{}
 
 func (f FactoryBurningShipIm) NewOrbit(Z Complex) Orbit {
-	return &orbitBurningShipIm{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitBurningShipIm(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -394,6 +420,13 @@ type orbitSpider struct {
 }
 
 var _ Orbit = &orbitSpider{}
+
+func newOrbitSpider(C Complex) *orbitSpider {
+	return &orbitSpider{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitSpider) Next() bool {
 	Z := p.Z
@@ -409,11 +442,8 @@ type FactorySpider struct{}
 
 var _ OrbitFactory = FactorySpider{}
 
-func (f FactorySpider) NewOrbit(Z Complex) Orbit {
-	return &orbitSpider{
-		Z: Z,
-		C: Z,
-	}
+func (FactorySpider) NewOrbit(Z Complex) Orbit {
+	return newOrbitSpider(Z)
 }
 
 //------------------------------------------------------------------------------
@@ -424,6 +454,13 @@ type orbitTricorn struct {
 }
 
 var _ Orbit = &orbitTricorn{}
+
+func newOrbitTricorn(C Complex) *orbitTricorn {
+	return &orbitTricorn{
+		Z: complexZero,
+		C: C,
+	}
+}
 
 func (p *orbitTricorn) Next() bool {
 	Z := p.Z
@@ -440,8 +477,5 @@ type FactoryTricorn struct{}
 var _ OrbitFactory = FactoryTricorn{}
 
 func (f FactoryTricorn) NewOrbit(Z Complex) Orbit {
-	return &orbitTricorn{
-		Z: Z,
-		C: Z,
-	}
+	return newOrbitTricorn(Z)
 }
