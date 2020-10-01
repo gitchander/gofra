@@ -1,9 +1,5 @@
 package main
 
-import (
-	"log"
-)
-
 func minInt(a, b int) int {
 	if a < b {
 		return a
@@ -35,10 +31,4 @@ func cropFloat64(x, min, max float64) float64 {
 		x = max
 	}
 	return x
-}
-
-func checkError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }

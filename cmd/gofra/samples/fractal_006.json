@@ -1,0 +1,49 @@
+{
+	"image_size": {
+		"width": 512,
+		"height": 512
+	},
+	"fractal_info": {
+		"formula": "mandelbrot",
+		"location": {
+			"center": {
+				"re": -0.7482885988419241,
+				"im": 0.0759704989330501
+			},
+			"radius": 2.220446049250313e-9,
+			"angle_deg": 0
+		},
+		"parameters": null
+	},
+	"calculation": {
+		"iterations": 15000,
+		"anti_aliasing": "25x"
+	},
+	"palette": {
+		"params": {
+			"A": [
+				0.5,
+				0.5,
+				0.5
+			],
+			"B": [
+				0.5,
+				0.5,
+				0.5
+			],
+			"C": [
+				1,
+				2,
+				4
+			],
+			"D": [
+				0.9295984173581052,
+				0.98380902486449,
+				0.5866145699915957
+			]
+		},
+		"space_color": "#000000",
+		"period": 350,
+		"shift": 0
+	}
+}

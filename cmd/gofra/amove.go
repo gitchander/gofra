@@ -12,16 +12,16 @@ func actionMove1(c *cli.Context) {
 
 	// ./gofra move -- -0.5 0.1
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	args := c.Args()
 
-	factorX, err := strconv.ParseFloat(args[0], 64)
+	factorX, err := strconv.ParseFloat(args.Get(0), 64)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	factorY, err := strconv.ParseFloat(args[1], 64)
+	factorY, err := strconv.ParseFloat(args.Get(1), 64)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -36,7 +36,7 @@ func actionMove2(c *cli.Context) {
 
 	// ./gofra move 5 5
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	args := c.Args()
 
@@ -52,12 +52,12 @@ func actionMove2(c *cli.Context) {
 
 	const w = 10
 
-	factorX, err := parseMoveCoord(args[0], w/2)
+	factorX, err := parseMoveCoord(args.Get(0), w/2)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	factorY, err := parseMoveCoord(args[1], w/2)
+	factorY, err := parseMoveCoord(args.Get(1), w/2)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -137,20 +137,20 @@ func actionMove3(c *cli.Context) {
 
 	// ./gofra move ph mh
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	args := c.Args()
 
-	if len(args) < 2 {
+	if args.Len() < 2 {
 		log.Fatal("move action need two parameters")
 	}
 
-	factorX, err := parseCoef(args[0])
+	factorX, err := parseCoef(args.Get(0))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	factorY, err := parseCoef(args[1])
+	factorY, err := parseCoef(args.Get(1))
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -212,19 +212,19 @@ var shoftNameToCoef = map[byte]float64{
 	'e': 0.125, // eighth  = (1 / 8)
 }
 
-func actionMove4(c *cli.Context) {
+func actionMove4(c *cli.Context) error {
 
 	// ./gofra move wasd
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	args := c.Args()
 
-	if len(args) < 1 {
-		log.Fatal("move need a parameter")
+	if args.Len() < 1 {
+		return errors.New("move need a parameter")
 	}
 
-	s := args[0]
+	s := args.Get(0)
 
 	var x, y float64
 	for _, c := range s {
@@ -245,8 +245,10 @@ func actionMove4(c *cli.Context) {
 
 	err := coreMove1(configName, factorX, factorY)
 	if err != nil {
-		log.Fatal(err.Error())
+		return err
 	}
 
 	renderIfNeed(c)
+
+	return nil
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"image"
-	"time"
 
 	"github.com/gitchander/gofra"
 
@@ -18,7 +17,7 @@ func renderWithProgress(m *image.RGBA, c *gofra.Config) {
 
 	bar := p.AddBar(int64(total),
 		mpb.PrependDecorators(
-			decor.Name("Render fractal: ", decor.WC{W: 0, C: 0}),
+			decor.Name("Rendering fractal: ", decor.WC{W: 0, C: 0}),
 			decor.Percentage(decor.WC{W: 0, C: 0}),
 		),
 		mpb.AppendDecorators(
@@ -29,11 +28,8 @@ func renderWithProgress(m *image.RGBA, c *gofra.Config) {
 	)
 
 	count := 0
-	start := time.Now()
 	progress := func(percent int) {
-		now := time.Now()
-		bar.IncrInt64(int64(percent-count), now.Sub(start))
-		start = now
+		bar.IncrInt64(int64(percent - count))
 		count = percent
 	}
 

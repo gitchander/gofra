@@ -10,6 +10,7 @@ import (
 	"log"
 
 	"github.com/gitchander/gofra/palgen"
+	"github.com/gitchander/gofra/utils/random"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	m := NewRGBASize(size)
 
 	var p palgen.Params
-	palgen.RandParams(palgen.NewRandNow(), &p)
+	palgen.RandParams(random.NewRandNow(), &p)
 	printJSON(p)
 
 	palgen.DrawPalette(m, p)

@@ -10,7 +10,8 @@ import (
 	"github.com/gitchander/gofra/math2d"
 )
 
-func RenderImageRGBA(m *image.RGBA, config Config, progress func(percent int)) {
+func RenderImageRGBA(m *image.RGBA, config Config,
+	progress func(percent int)) {
 
 	var (
 		nX = m.Rect.Dx()
@@ -82,7 +83,8 @@ progressLoop:
 	wg.Wait()
 }
 
-func renderRectangle(wg *sync.WaitGroup, r image.Rectangle, cc colorСomputer, si *syncImage, points chan<- int) {
+func renderRectangle(wg *sync.WaitGroup, r image.Rectangle,
+	cc colorСomputer, si *syncImage, points chan<- int) {
 
 	var (
 		y0 = r.Min.Y

@@ -186,19 +186,19 @@ func transpose(m []float64) {
 
 func invert(n, m []float64) {
 
-	inv_det := 1.0 / det(n)
+	detInv := 1.0 / det(n)
 
-	m[0] = +inv_det * (n[4]*n[8] - n[5]*n[7])
-	m[1] = -inv_det * (n[3]*n[8] - n[5]*n[6])
-	m[2] = +inv_det * (n[3]*n[7] - n[4]*n[6])
+	m[0] = +detInv * (n[4]*n[8] - n[5]*n[7])
+	m[1] = -detInv * (n[3]*n[8] - n[5]*n[6])
+	m[2] = +detInv * (n[3]*n[7] - n[4]*n[6])
 
-	m[3] = -inv_det * (n[1]*n[8] - n[2]*n[7])
-	m[4] = +inv_det * (n[0]*n[8] - n[2]*n[6])
-	m[5] = -inv_det * (n[0]*n[7] - n[1]*n[6])
+	m[3] = -detInv * (n[1]*n[8] - n[2]*n[7])
+	m[4] = +detInv * (n[0]*n[8] - n[2]*n[6])
+	m[5] = -detInv * (n[0]*n[7] - n[1]*n[6])
 
-	m[6] = +inv_det * (n[1]*n[5] - n[2]*n[4])
-	m[7] = -inv_det * (n[0]*n[5] - n[2]*n[3])
-	m[8] = +inv_det * (n[0]*n[4] - n[1]*n[3])
+	m[6] = +detInv * (n[1]*n[5] - n[2]*n[4])
+	m[7] = -detInv * (n[0]*n[5] - n[2]*n[3])
+	m[8] = +detInv * (n[0]*n[4] - n[1]*n[3])
 
 	transpose(m)
 }

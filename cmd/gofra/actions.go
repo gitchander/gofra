@@ -10,116 +10,160 @@ import (
 	"github.com/gitchander/gofra"
 )
 
-func actionDefault(c *cli.Context) {
+func actionDefault(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	err := coreDefault(configName)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
 func renderIfNeed(c *cli.Context) {
-	if c.Parent().Bool("render") {
+	if c.Bool("render") {
 		actionDraw(c)
 	}
 }
 
-func actionDraw(c *cli.Context) {
+func actionDraw(c *cli.Context) error {
 
 	var (
-		configName = c.Parent().String("config")
-		imageName  = c.Parent().String("image")
+		configName = c.String("config")
+		imageName  = c.String("image")
 	)
 
 	begin := time.Now()
 
 	err := coreRender(configName, imageName)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("Work duration:", time.Since(begin))
+
+	return nil
 }
 
-func actionMove(c *cli.Context) {
-	actionMove4(c)
+func actionMove(c *cli.Context) error {
+	return actionMove4(c)
 }
 
-func actionRotate(c *cli.Context) {
+func actionRotate(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	angleDeg, err := strconv.ParseInt(c.Args().First(), 10, 32)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	err = coreRotate(configName, int(angleDeg))
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
-func actionIter(c *cli.Context) {
+func actionIter(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	n, err := strconv.ParseInt(c.Args().First(), 10, 32)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	err = coreIter(configName, int(n))
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
-func actionScale(c *cli.Context) {
+func actionScale(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 	scaleFactor, err := strconv.ParseFloat(c.Args().First(), 64)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	err = coreScale(configName, scaleFactor)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
-func actionPalette(c *cli.Context) {
+func actionPalette(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	args := c.Args()
 
 	palPeriod, err := strconv.ParseFloat(args.Get(0), 64)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	palShift, err := strconv.ParseFloat(args.Get(1), 64)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	err = corePalette(configName, palPeriod, palShift)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
-func actionRandomPalette(c *cli.Context) {
+func actionRandomPalette(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	err := coreRandomPalette(configName)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
 
-func actionAntiAliasing(c *cli.Context) {
+func actionAntiAliasing(c *cli.Context) error {
 
-	configName := c.Parent().String("config")
+	configName := c.String("config")
 
 	aa, err := gofra.ParseAntiAliasing(c.Args().First())
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	err = coreAntiAliasing(configName, aa)
-	checkError(err)
+	if err != nil {
+		return err
+	}
 
 	renderIfNeed(c)
+
+	return nil
 }
