@@ -21,13 +21,13 @@ type OrbitFactory interface {
 }
 
 // Escape time algorithm
-func TraceOrbit(t Orbit, n int) int {
+func TraceOrbit(t Orbit, n int) (int, bool) {
 	for i := 0; i < n; i++ {
 		if !t.Next() {
-			return i
+			return i, true
 		}
 	}
-	return -1
+	return 0, false
 }
 
 //------------------------------------------------------------------------------

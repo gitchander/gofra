@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	"github.com/gitchander/gofra"
 )

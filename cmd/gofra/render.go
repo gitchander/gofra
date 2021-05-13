@@ -29,7 +29,7 @@ func renderWithProgress(m *image.RGBA, c *gofra.Config) {
 
 	count := 0
 	progress := func(percent int) {
-		bar.IncrInt64(int64(percent - count))
+		bar.IncrBy(percent - count)
 		count = percent
 	}
 

@@ -60,7 +60,12 @@ func RenderImageRGBA(m *image.RGBA, config Config,
 		}
 	}
 
-	ticker := time.NewTicker(time.Second)
+	var (
+		// tickerDuration= 1 * time.Second
+		tickerDuration = 250 * time.Millisecond
+	)
+
+	ticker := time.NewTicker(tickerDuration)
 	defer ticker.Stop()
 
 	total := nX * nY

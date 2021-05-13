@@ -10,7 +10,7 @@ func lerp(v0, v1 float64, t float64) float64 {
 
 func cropFloat64(x float64, min, max float64) float64 {
 	if max < min {
-		return 0 // empty interval
+		panic("invalid interval")
 	}
 	if x < min {
 		x = min

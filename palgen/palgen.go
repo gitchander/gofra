@@ -6,6 +6,8 @@ import (
 	"github.com/gitchander/gofra/fcolor"
 )
 
+const twoPi = 2 * math.Pi
+
 // http://www.iquilezles.org/www/articles/palettes/palettes.htm
 
 // t = [0..1]
@@ -22,8 +24,6 @@ func palette(a, b, c, d Vec3, t float64) Vec3 {
 
 	// a + b * cos( 2*pi * (c*t + d) )
 
-	const twoPi = 2 * math.Pi
-
 	angle := c.MulScalar(t).Add(d).MulScalar(twoPi)
 
 	cos := CosVec3(angle)
@@ -32,8 +32,8 @@ func palette(a, b, c, d Vec3, t float64) Vec3 {
 }
 
 func clampFloat64(x float64, min, max float64) float64 {
-	if max < min { // It is empty intarval
-		return 0 // Default value is zero
+	if max < min {
+		panic("invalid interval")
 	}
 	if x < min {
 		x = min

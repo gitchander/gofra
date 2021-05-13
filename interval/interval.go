@@ -56,6 +56,6 @@ func (a Interval) Split(count int) []Interval {
 
 func quoRem(a, b int) (quo, rem int) {
 	quo = a / b
-	rem = a - quo*b
+	rem = a % b
 	return
 }

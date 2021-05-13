@@ -23,14 +23,15 @@ type aliasingСomputer struct {
 }
 
 func (c aliasingСomputer) colorСompute(x, y int) color.RGBA {
+
 	var Z Complex
 	Z.Re, Z.Im = c.transform.TransformPoint(float64(x), float64(y))
 
 	orbit := c.orbitFactory.NewOrbit(Z)
-	iter := TraceOrbit(orbit, c.iterations)
+	iter, ok := TraceOrbit(orbit, c.iterations)
 
 	var fc fcolor.RGB
-	if iter == -1 {
+	if !ok {
 		fc = c.spaceColor
 	} else {
 		fc = c.colorTable[iter]
@@ -75,10 +76,10 @@ func (c antiAliasingСomputer) colorСompute(x, y int) color.RGBA {
 		)
 
 		orbit := c.orbitFactory.NewOrbit(Z)
-		iter := TraceOrbit(orbit, c.iterations)
+		iter, ok := TraceOrbit(orbit, c.iterations)
 
 		var fc fcolor.RGB
-		if iter == -1 {
+		if !ok {
 			fc = c.spaceColor
 		} else {
 			fc = c.colorTable[iter]
