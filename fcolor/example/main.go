@@ -16,15 +16,15 @@ func main() {
 	}
 
 	colors := []NameColor{
-		NameColor{Name: "Black", Color: fcolor.RGB{0, 0, 0}},
-		NameColor{Name: "White", Color: fcolor.RGB{1, 1, 1}},
-		NameColor{Name: "Gray", Color: fcolor.RGB{0.5, 0.5, 0.5}},
-		NameColor{Name: "Red", Color: fcolor.RGB{1, 0, 0}},
-		NameColor{Name: "Green", Color: fcolor.RGB{0, 0.5, 0}},
-		NameColor{Name: "Blue", Color: fcolor.RGB{0, 0, 1}},
-		NameColor{Name: "Yellow", Color: fcolor.RGB{1, 1, 0}},
-		NameColor{Name: "Aqua", Color: fcolor.RGB{0, 1, 1}},
-		NameColor{Name: "Magenta", Color: fcolor.RGB{1, 0, 1}},
+		NameColor{Name: "Black", Color: fcolor.RGB{R: 0, G: 0, B: 0}},
+		NameColor{Name: "White", Color: fcolor.RGB{R: 1, G: 1, B: 1}},
+		NameColor{Name: "Gray", Color: fcolor.RGB{R: 0.5, G: 0.5, B: 0.5}},
+		NameColor{Name: "Red", Color: fcolor.RGB{R: 1, G: 0, B: 0}},
+		NameColor{Name: "Green", Color: fcolor.RGB{R: 0, G: 0.5, B: 0}},
+		NameColor{Name: "Blue", Color: fcolor.RGB{R: 0, G: 0, B: 1}},
+		NameColor{Name: "Yellow", Color: fcolor.RGB{R: 1, G: 1, B: 0}},
+		NameColor{Name: "Aqua", Color: fcolor.RGB{R: 0, G: 1, B: 1}},
+		NameColor{Name: "Magenta", Color: fcolor.RGB{R: 1, G: 0, B: 1}},
 	}
 
 	for _, c := range colors {
