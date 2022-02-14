@@ -124,17 +124,3 @@ func (a Complex) Power(p float64) Complex {
 		Angle:  a.Argument() * p,
 	}.Complex()
 }
-
-// Trigonometric form
-type Polar struct {
-	Radius float64
-	Angle  float64
-}
-
-func (p Polar) Complex() Complex {
-	sin, cos := math.Sincos(p.Angle)
-	return Complex{
-		Re: p.Radius * cos,
-		Im: p.Radius * sin,
-	}
-}

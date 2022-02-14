@@ -8,12 +8,13 @@ import (
 
 	"github.com/gitchander/gofra"
 	"github.com/gitchander/gofra/palgen"
+	"github.com/gitchander/gofra/utils"
 	"github.com/gitchander/gofra/utils/random"
 )
 
 func LoadConfigFromFile(fileName string) (*gofra.Config, error) {
 	var c gofra.Config
-	err := gofra.LoadFromJsonFile(fileName, &c)
+	err := utils.LoadConfigJSON(fileName, &c)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +23,7 @@ func LoadConfigFromFile(fileName string) (*gofra.Config, error) {
 
 func coreDefault(configName string) error {
 	c := gofra.DefaultConfig
-	return gofra.SaveToJsonFile(configName, c)
+	return utils.SaveConfigJSON(configName, c)
 }
 
 func coreRender(configName, imageName string) error {
@@ -64,7 +65,7 @@ func coreIter(configName string, n int) error {
 
 	config.Calculation.Iterations = n
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreScale(configName string, scale float64) error {
@@ -76,7 +77,7 @@ func coreScale(configName string, scale float64) error {
 
 	config.FractalInfo.Location.Radius /= scale
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreRotate(configName string, angle int) error {
@@ -88,7 +89,7 @@ func coreRotate(configName string, angle int) error {
 
 	config.RotateDeg(angle)
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreMove1(configName string, x, y float64) error {
@@ -103,7 +104,7 @@ func coreMove1(configName string, x, y float64) error {
 
 	config.MoveRelativeLocation(x, y)
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreMove2(configName string, x, y float64) error {
@@ -125,7 +126,7 @@ func coreMove2(configName string, x, y float64) error {
 
 	config.MoveRelativeLocation(x, y)
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func corePalette(configName string, Period, Shift float64) error {
@@ -140,7 +141,7 @@ func corePalette(configName string, Period, Shift float64) error {
 	p.Period = Period
 	p.Shift = Shift
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreRandomPalette(configName string) error {
@@ -153,9 +154,9 @@ func coreRandomPalette(configName string) error {
 	p := &(config.Palette)
 
 	r := random.NewRandNow()
-	palgen.RandParams(r, &(p.Params))
+	palgen.RandParams(r, &(p.Params), 7)
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
 }
 
 func coreAntiAliasing(configName string, aa gofra.AntiAliasing) error {
@@ -167,5 +168,22 @@ func coreAntiAliasing(configName string, aa gofra.AntiAliasing) error {
 
 	config.Calculation.AntiAliasing = aa
 
-	return gofra.SaveToJsonFile(configName, config)
+	return utils.SaveConfigJSON(configName, config)
+}
+
+func coreBackup(configName, backupName string) error {
+
+	config, err := LoadConfigFromFile(configName)
+	if err != nil {
+		return err
+	}
+
+	err = utils.SaveConfigJSON(backupName, config)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("config saved to %s\n", backupName)
+
+	return nil
 }

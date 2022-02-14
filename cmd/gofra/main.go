@@ -101,6 +101,23 @@ func main() {
 			Usage:   "anti-aliasing",
 			Action:  actionAntiAliasing,
 		},
+		{
+			Name:   "backup",
+			Usage:  "make backup config file",
+			Action: actionBackup,
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:  "directory",
+					Value: "backups",
+					Usage: "backups directory",
+				},
+				&cli.StringFlag{
+					Name:  "prefix",
+					Value: "backup_",
+					Usage: "backup file prefix",
+				},
+			},
+		},
 	}
 
 	err := app.Run(os.Args)

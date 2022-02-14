@@ -1,11 +1,11 @@
-package gofra
+package utils
 
 import (
 	"encoding/json"
 	"io/ioutil"
 )
 
-func LoadFromJsonFile(filename string, v interface{}) error {
+func LoadConfigJSON(filename string, v interface{}) error {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
@@ -13,7 +13,7 @@ func LoadFromJsonFile(filename string, v interface{}) error {
 	return json.Unmarshal(data, v)
 }
 
-func SaveToJsonFile(filename string, v interface{}) error {
+func SaveConfigJSON(filename string, v interface{}) error {
 	data, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		return err

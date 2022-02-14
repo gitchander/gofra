@@ -5,12 +5,10 @@ import (
 	"math/rand"
 )
 
-func RandParams(r *rand.Rand, p *Params) {
+func RandParams(r *rand.Rand, p *Params, n int) {
 
 	p.A = Vec3{0.5, 0.5, 0.5}
 	p.B = Vec3{0.5, 0.5, 0.5}
-
-	const n = 7
 
 	switch 0 {
 
@@ -31,9 +29,9 @@ func RandParams(r *rand.Rand, p *Params) {
 
 	case 2:
 		p.C = Vec3{
-			0: r.Float64() * n,
-			1: r.Float64() * n,
-			2: r.Float64() * n,
+			0: r.Float64() * float64(n),
+			1: r.Float64() * float64(n),
+			2: r.Float64() * float64(n),
 		}
 	}
 

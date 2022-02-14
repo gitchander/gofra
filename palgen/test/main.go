@@ -18,7 +18,7 @@ func main() {
 	m := NewRGBASize(size)
 
 	var p palgen.Params
-	palgen.RandParams(random.NewRandNow(), &p)
+	palgen.RandParams(random.NewRandNow(), &p, 7)
 	printJSON(p)
 
 	palgen.DrawPalette(m, p)

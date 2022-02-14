@@ -20,7 +20,7 @@ func nearDivs(x int) (a, b int) {
 	return
 }
 
-func degToRad(deg float64) float64 {
+func degToRad(deg float64) (rad float64) {
 	return deg * math.Pi / 180
 }
 

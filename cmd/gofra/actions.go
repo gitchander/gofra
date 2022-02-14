@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -166,4 +167,19 @@ func actionAntiAliasing(c *cli.Context) error {
 	renderIfNeed(c)
 
 	return nil
+}
+
+func actionBackup(c *cli.Context) error {
+
+	configName := c.String("config")
+
+	var (
+		directory = c.String("directory")
+		prefix    = c.String("prefix")
+		seconds   = time.Now().Unix()
+	)
+
+	backupName := filepath.Join(directory, fmt.Sprintf("%s%d%s", prefix, seconds, ".json"))
+
+	return coreBackup(configName, backupName)
 }

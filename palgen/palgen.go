@@ -14,9 +14,9 @@ const twoPi = 2 * math.Pi
 func ColorByParams(p Params, t float64) fcolor.RGB {
 	v := palette(p.A, p.B, p.C, p.D, t)
 	return fcolor.RGB{
-		R: clampFloat64(v[0], 0, 1),
-		G: clampFloat64(v[1], 0, 1),
-		B: clampFloat64(v[2], 0, 1),
+		R: clamp01(v[0]),
+		G: clamp01(v[1]),
+		B: clamp01(v[2]),
 	}
 }
 
@@ -29,6 +29,10 @@ func palette(a, b, c, d Vec3, t float64) Vec3 {
 	cos := CosVec3(angle)
 
 	return a.Add(b.Mul(cos))
+}
+
+func clamp01(x float64) float64 {
+	return clampFloat64(x, 0, 1)
 }
 
 func clampFloat64(x float64, min, max float64) float64 {

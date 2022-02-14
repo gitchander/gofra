@@ -10,7 +10,7 @@ func NewRandSeed(seed int64) *rand.Rand {
 }
 
 func NewRandTime(t time.Time) *rand.Rand {
-	return NewRandSeed(t.UTC().UnixNano())
+	return NewRandSeed(t.UnixNano())
 }
 
 func NewRandNow() *rand.Rand {
